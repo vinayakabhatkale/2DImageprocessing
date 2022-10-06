@@ -1,0 +1,9 @@
+{
+  "package_name": "octomap_msgs",
+  "non_idl_tuples": [
+    "/root/ModProFT/src/octomap_msgs:msg/Octomap.msg",
+    "/root/ModProFT/src/octomap_msgs:msg/OctomapWithPose.msg",
+    "/root/ModProFT/src/octomap_msgs:srv/BoundingBoxQuery.srv",
+    "/root/ModProFT/src/octomap_msgs:srv/GetOctomap.srv"
+  ]
+}

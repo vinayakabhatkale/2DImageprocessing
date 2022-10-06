@@ -1,0 +1,6 @@
+action/MoveCartesian.action
+action/MoveCartesian.idl
+action/MoveJoint.action
+action/MoveJoint.idl
+action/MovePose.action
+action/MovePose.idl

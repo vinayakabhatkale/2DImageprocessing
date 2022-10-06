@@ -1,0 +1,3 @@
+/root/ModProFT/src/build/rcontrol_msgs/rosidl_adapter/rcontrol_msgs:action/MoveCartesian.idl
+/root/ModProFT/src/build/rcontrol_msgs/rosidl_adapter/rcontrol_msgs:action/MoveJoint.idl
+/root/ModProFT/src/build/rcontrol_msgs/rosidl_adapter/rcontrol_msgs:action/MovePose.idl

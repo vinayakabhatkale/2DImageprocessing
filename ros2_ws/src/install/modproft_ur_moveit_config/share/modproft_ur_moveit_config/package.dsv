@@ -1,0 +1,6 @@
+source;share/modproft_ur_moveit_config/hook/pythonpath.ps1
+source;share/modproft_ur_moveit_config/hook/pythonpath.dsv
+source;share/modproft_ur_moveit_config/hook/pythonpath.sh
+source;share/modproft_ur_moveit_config/hook/ament_prefix_path.ps1
+source;share/modproft_ur_moveit_config/hook/ament_prefix_path.dsv
+source;share/modproft_ur_moveit_config/hook/ament_prefix_path.sh

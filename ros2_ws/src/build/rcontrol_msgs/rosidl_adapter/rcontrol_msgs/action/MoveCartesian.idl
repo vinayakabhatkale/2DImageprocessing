@@ -1,0 +1,18 @@
+// generated from rosidl_adapter/resource/action.idl.em
+// with input from rcontrol_msgs/action/MoveCartesian.action
+// generated code does not contain a copyright notice
+
+
+module rcontrol_msgs {
+  module action {
+    struct MoveCartesian_Goal {
+      sequence<double> posevalues;
+    };
+    struct MoveCartesian_Result {
+      boolean success;
+    };
+    struct MoveCartesian_Feedback {
+      int8 status;
+    };
+  };
+};

@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<robot name="box" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+  <xacro:macro name="set_transmission" params="box_name">
+
+    <transmission name="BoxCover_Joint_tran">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="BoxCover_Joint_${box_name}">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="BoxCover_Joint_actr">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+    <transmission name="BoxLever_Joint_tran">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="BoxLever_Joint_${box_name}">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="BoxLever_Joint_actr">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+  </xacro:macro>
+
+</robot>

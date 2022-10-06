@@ -1,0 +1,35 @@
+[0.045s] Invoking command in '/root/ModProFT/src/build/octomap_rviz_plugins': AMENT_PREFIX_PATH=/root/ModProFT/src/install/octomap_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ModProFT/src/install/octomap_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/root/ModProFT/src/install/octomap_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ModProFT/src/install/octomap_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /root/ModProFT/src/octomap_rviz_plugins -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/root/ModProFT/src/install/octomap_rviz_plugins
+[0.202s] -- The C compiler identification is GNU 9.4.0
+[0.382s] -- The CXX compiler identification is GNU 9.4.0
+[0.402s] -- Check for working C compiler: /usr/bin/cc
+[0.561s] -- Check for working C compiler: /usr/bin/cc -- works
+[0.563s] -- Detecting C compiler ABI info
+[0.691s] -- Detecting C compiler ABI info - done
+[0.716s] -- Detecting C compile features
+[0.718s] -- Detecting C compile features - done
+[0.726s] -- Check for working CXX compiler: /usr/bin/c++
+[0.897s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[0.899s] -- Detecting CXX compiler ABI info
+[1.086s] -- Detecting CXX compiler ABI info - done
+[1.119s] -- Detecting CXX compile features
+[1.120s] -- Detecting CXX compile features - done
+[1.172s] CMake Error at CMakeLists.txt:4 (find_package):
+[1.172s]   By not providing "Findcatkin.cmake" in CMAKE_MODULE_PATH this project has
+[1.172s]   asked CMake to find a package configuration file provided by "catkin", but
+[1.172s]   CMake did not find one.
+[1.172s] 
+[1.173s]   Could not find a package configuration file provided by "catkin" with any
+[1.173s]   of the following names:
+[1.173s] 
+[1.173s]     catkinConfig.cmake
+[1.173s]     catkin-config.cmake
+[1.173s] 
+[1.173s]   Add the installation prefix of "catkin" to CMAKE_PREFIX_PATH or set
+[1.174s]   "catkin_DIR" to a directory containing one of the above files.  If "catkin"
+[1.174s]   provides a separate development package or SDK, be sure it has been
+[1.174s]   installed.
+[1.174s] 
+[1.174s] 
+[1.176s] -- Configuring incomplete, errors occurred!
+[1.176s] See also "/root/ModProFT/src/build/octomap_rviz_plugins/CMakeFiles/CMakeOutput.log".
+[1.197s] Invoked command in '/root/ModProFT/src/build/octomap_rviz_plugins' returned '1': AMENT_PREFIX_PATH=/root/ModProFT/src/install/octomap_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ModProFT/src/install/octomap_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/root/ModProFT/src/install/octomap_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ModProFT/src/install/octomap_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /root/ModProFT/src/octomap_rviz_plugins -DCATKIN_INSTALL_INTO_PREFIX_ROOT=0 -DCMAKE_INSTALL_PREFIX=/root/ModProFT/src/install/octomap_rviz_plugins
