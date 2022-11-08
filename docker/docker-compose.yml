@@ -42,8 +42,7 @@ services:
       - ../overwrite/ur_robot_driver/include/ur_robot_driver/hardware_interface.hpp:/root/ur_driver/src/ur_robot_driver/include/ur_robot_driver/hardware_interface.hpp
       - ../overwrite/ur_robot_driver/resources/ros_control.urscript:/root/ur_driver/src/ur_robot_driver/resources/ros_control.urscript
       - ../overwrite/ur_robot_driver/src/hardware_interface.cpp:/root/ur_driver/src/ur_robot_driver/src/hardware_interface.cpp
-      - ../overwrite/ur_description/urdf/ur.urdf.xacro:/root/ur_driver/src/ur_description/urdf/ur.urdf.xacro
-      - ../overwrite/ur_description/urdf/ur_macro.xacro:/root/ur_driver/src/ur_description/urdf/ur_macro.xacro
+      - ../overwrite/ur_description:/root/ur_driver/src/ur_description
     devices:
       - '/dev:/dev'
     ports:
