@@ -138,6 +138,9 @@ RUN apt-get update && apt-get install -y \
    libdmtx0b \
    libpcl-dev
 
+RUN python3 -m pip install --no-cache \
+    setuptools==58.2.0
+
 # UR dependencies
 RUN apt-get update && apt-get install -y \
    ros-foxy-ur-msgs \

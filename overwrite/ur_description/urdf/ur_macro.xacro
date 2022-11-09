@@ -377,66 +377,138 @@
     </joint>
 
 
-  <!-- Own Customization -->
-    <link name="custom_camera_link">
-        <visual>
-            <origin xyz="0.01 0 0" rpy="0 0 0"/>
-            <geometry>
-                <box size="0.01 0.01 0.01"/>
-            </geometry>
-        </visual>
-    </link>
+<!-- Own Customization -->
+ <gazebo reference="camera_depth_frame">
+  <sensor type="depth" name="cam"> 
+    <always_on>0</always_on>
+    <update_rate>1</update_rate>
+    <camera name="gazebo_camera">
+      <horizontal_fov>1.047198</horizontal_fov>
+      <image>
+        <width>640</width>
+        <height>480</height>
+        <format>R8G8B8</format>
+      </image>
+      <clip>
+          <near>0.05</near>
+          <far>3</far>
+      </clip>
+      <distortion>
+        <k1>0.0</k1>
+        <k2>0.0</k2>
+        <k3>0.0</k3>
+        <p1>0.0</p1>
+        <p2>0.0</p2>
+        <center>0.5 0.5</center>
+      </distortion>
+    </camera>
+    <plugin name="gazebo_cam" filename="libgazebo_ros_camera.so">
+      <ros>
+        <imageTopicName>/camera/color/image_raw</imageTopicName>
+        <cameraInfoTopicName>/camera/color/camera_info</cameraInfoTopicName>
+        <depthImageTopicName>/camera/depth/image_raw</depthImageTopicName>
+        <depthImageCameraInfoTopicName>/camera/depth/camera_info</depthImageCameraInfoTopicName>
+        <pointCloudTopicName>/camera/depth/points</pointCloudTopicName>
+      </ros>
+      <camera_name>gazebo_camera</camera_name>
+      <frame_name>camera_depth_frame</frame_name>
+      <hack_baseline>0.07</hack_baseline>
+      <min_depth>0.001</min_depth>
+    </plugin>
+  </sensor>
+</gazebo>
 
-    <joint name="custom_camera_joint" type="fixed">
-        <origin rpy="0 ${-pi/2.0} 0" xyz="0.0 0.0 0.0"/>
-        <parent link="${prefix}tool0"/>
-        <child link="custom_camera_link"/>
-    </joint>
-    
-    <gazebo reference="custom_camera_link">
-        <sensor type="depth" name="cam"> 
-          <always_on>0</always_on>
-          <update_rate>1</update_rate>
-          <camera name="custom_camera">
-              <horizontal_fov>1.047198</horizontal_fov>
-              <image>
-                <width>640</width>
-                <height>480</height>
-                <format>R8G8B8</format>
-              </image>
-              <clip>
-                  <near>0.05</near>
-                  <far>3</far>
-              </clip>
-              <distortion>
-                <k1>0.0</k1>
-                <k2>0.0</k2>
-                <k3>0.0</k3>
-                <p1>0.0</p1>
-                <p2>0.0</p2>
-                <center>0.5 0.5</center>
-              </distortion>
-          </camera>
-          <plugin name="gazebo_cam" filename="libgazebo_ros_camera.so">
-              <ros>
-                <!-- <namespace>custom_ns</namespace>
-                <remapping>custom_camera/image_raw:=custom_camera/custom_image</remapping>
-                <remapping>custom_camera/image_depth:=custom_camera/custom_image_depth</remapping>
-                <remapping>custom_camera/camera_info:=custom_camera/custom_info_raw</remapping>
-                <remapping>custom_camera/camera_info_depth:=custom_camera/custom_info_depth</remapping>
-                <remapping>custom_camera/points:=custom_camera/custom_points</remapping> -->
-                <remapping>custom_camera/points:=cloud_in</remapping>
-                
-              </ros>
+  <!-- Attach Kinect to table -->
+  <joint type="fixed" name="table_camera_joint">
+    <origin xyz="0.15 -1 0.1" rpy="0 0 1.57"/>
+    <child link="camera_rgb_frame"/>
+    <parent link="world"/>
+    <axis xyz="0 0 0" rpy="0 0 0"/>
+    <limit effort="10000" velocity="1000"/>
+    <dynamics damping="1.0" friction="1.0"/>
+  </joint>
 
-              <camera_name>custom_camera</camera_name>
-              <frame_name>custom_camera_link</frame_name>
-              <hack_baseline>0.07</hack_baseline>
-              <min_depth>0.001</min_depth>
-          </plugin>
-        </sensor>
-    </gazebo>
-    
+  <link name="camera_rgb_frame">
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
 
+  <joint name="camera_rgb_optical_joint" type="fixed">
+    <origin rpy="-1.57079632679 0 -1.57079632679" xyz="0 0 0"/>
+    <parent link="camera_rgb_frame"/>
+    <child link="camera_rgb_optical_frame"/>
+  </joint>
+
+  <link name="camera_rgb_optical_frame">
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="-0.031 -0.0 -0.016"/>
+    <parent link="camera_rgb_frame"/>
+    <child link="camera_link"/>
+  </joint>
+
+  <link name="camera_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.07271 0.27794 0.073"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0.0 0.0 0.0"/>
+      <geometry>
+        <box size="0.07271 0.27794 0.073"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+
+  <!-- The fixed joints & links below are usually published by static_transformers launched by the OpenNi launch
+     files. However, for Gazebo simulation we need them, so we add them here.
+     (Hence, don't publish them additionally!) -->
+
+  <joint name="camera_depth_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0.0 0"/>
+    <parent link="camera_rgb_frame"/>
+    <child link="camera_depth_frame"/>
+  </joint>
+
+  <link name="camera_depth_frame">
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+
+  <joint name="camera_depth_optical_joint" type="fixed">
+    <origin rpy="-1.57079632679 0 -1.57079632679" xyz="0 0 0"/>
+    <parent link="camera_depth_frame"/>
+    <child link="camera_depth_optical_frame"/>
+  </joint>
+
+  <link name="camera_depth_optical_frame">
+    <inertial>
+      <mass value="0.001"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+    </inertial>
+  </link>
+
+
+  
   </xacro:macro>
 </robot>

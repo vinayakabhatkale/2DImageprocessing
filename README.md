@@ -21,6 +21,7 @@
 
     ```
     cd /root/ModProFT
+    rosdep install --ignore-src --from-paths src -y -r
     colcon build
     source install/setup.bash
     ```

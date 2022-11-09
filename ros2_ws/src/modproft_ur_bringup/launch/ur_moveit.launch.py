@@ -290,6 +290,13 @@ def generate_launch_description():
         },
     }
 
+    octomap_config = {"octomap_frame": "camera_rgb_optical_frame", 
+                      "octomap_resolution": 0.05,
+                      "max_range": 5.0}
+
+    octomap_updater_config = load_yaml("modproft_ur_bringup", "config/sensors_3d.yaml")
+
+
     # Start the actual move_group node/action server
     move_group_node = Node(
         package="moveit_ros_move_group",
@@ -303,6 +310,8 @@ def generate_launch_description():
             trajectory_execution,
             moveit_controllers,
             planning_scene_monitor_parameters,
+            octomap_config,
+            octomap_updater_config
         ],
     )
 
@@ -346,6 +355,19 @@ def generate_launch_description():
         arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "base_link"],
     )
 
+    to_camera = Node(package='tf2_ros',
+                    executable='static_transform_publisher',
+                    name='to_camera',
+                    output='log',
+                    arguments=['0.0456182184306', '0.920306921713', '0.173307732431', '0.281265880202', '0.285536901533', '-0.660771825434', '0.634617031926', 'world', 'camera_link'])
+
+    to_camera_rgb = Node(package='tf2_ros',
+                    executable='static_transform_publisher',
+                    name='to_camera_rgb',
+                    output='log',
+                    arguments=['-0.0', '0.015', '-0.0', '-0.501', '0.500', '-0.495', '0.504', 'camera_link', 'camera_rgb_optical_frame'])
+
+
     # Start the action server
     moveit_action_server = Node(
         name="moveit_action_server",
@@ -363,12 +385,20 @@ def generate_launch_description():
         ],
     )
 
+    # Point cloud publisher
+    pcd_publish_node = Node(package='pointcloud_pub',
+                            executable='pcd_publisher',
+                            output='screen')
+
     nodes_to_start = [
         move_group_node,
         mongodb_server_node,
         rviz_node,
         static_tf,
-        moveit_action_server,
+        #moveit_action_server,
+        to_camera,
+        to_camera_rgb,
+        pcd_publish_node,
     ]
 
     return LaunchDescription(declared_arguments + nodes_to_start)

@@ -14,6 +14,8 @@ setup(
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'launch'), glob('launch/*.launch.py')),
         (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
+        (os.path.join('share', package_name, 'meshes'), glob('meshes/*.dae')),
+        (os.path.join('share', package_name, 'data'), glob('data/*.pcd')),
     ],
     install_requires=['setuptools', 'os', 'glob'],
     zip_safe=True,
