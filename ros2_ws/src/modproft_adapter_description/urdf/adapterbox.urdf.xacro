@@ -1,0 +1,428 @@
+<?xml version="1.0" ?>
+<robot name="box" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:arg name="package_name" default="modproft_adapter_description"/>
+    <xacro:arg name="entity_type" default=""/>
+    <xacro:arg name="entity_name" default=""/>
+    <xacro:arg name="args" default=""/>
+
+    <xacro:property name="package_name" value="$(arg package_name)"/>
+    <xacro:property name="box_type" value="$(arg entity_type)"/>
+    <xacro:property name="box_name" value="$(arg entity_name)"/>
+    <xacro:property name="adapter_type" value="$(arg args)"/>
+
+    <xacro:include filename="$(find ${package_name})/urdf/inc/materials.xacro"/>
+
+    <xacro:include filename="$(find ${package_name})/urdf/inc/adapterbox_transmission.xacro"/>
+    <xacro:include filename="$(find ${package_name})/urdf/inc/adapterbox_common.xacro"/>
+    <xacro:include filename="$(find ${package_name})/urdf/inc/adapter_common.xacro"/>
+
+    <xacro:read_adapterbox_data adapterbox_parameter_file="$(find ${package_name})/config/${box_type}.yaml"/>
+    <xacro:read_adapter_data adapter_parameter_file="$(find ${package_name})/config/${adapter_type}.yaml"/>
+
+    <!-- <xacro:set_transmission box_name="${box_name}"/> -->
+
+    <link name="${box_name}">
+        <inertial>
+            <origin rpy="${box_inertial_origin_rpy}" xyz="${box_inertial_origin_xyz}"/>
+            <mass value="${box_inertial_mass}"/>
+            <inertia ixx="${box_inertial_inertia_ixx}"
+                     ixy="${box_inertial_inertia_ixy}"
+                     ixz="${box_inertial_inertia_ixy}"
+                     iyy="${box_inertial_inertia_iyy}"
+                     iyz="${box_inertial_inertia_iyz}"
+                     izz="${box_inertial_inertia_izz}"/>
+        </inertial>
+        <visual>
+            <origin rpy="${box_visual_origin_rpy}" xyz="${box_visual_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${box_visual_geometry_mesh}"
+                      scale="${box_visual_geometry_scale}"/>
+            </geometry>
+            <material name="${box_visual_material}"/>
+        </visual>
+        <collision>
+            <origin rpy="${box_collision_origin_rpy}" xyz="${box_collision_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${box_collision_geometry_mesh}"
+                      scale="${box_collision_geometry_scale}"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="cover_frame_${box_name}">
+        <inertial>
+            <origin rpy="${cover_frame_inertial_origin_rpy}" xyz="${cover_frame_inertial_origin_xyz}"/>
+            <mass value="${cover_frame_inertial_mass}"/>
+            <inertia ixx="${cover_frame_inertial_inertia_ixx}"
+                     ixy="${cover_frame_inertial_inertia_ixy}"
+                     ixz="${cover_frame_inertial_inertia_ixy}"
+                     iyy="${cover_frame_inertial_inertia_iyy}"
+                     iyz="${cover_frame_inertial_inertia_iyz}"
+                     izz="${cover_frame_inertial_inertia_izz}"/>
+        </inertial>
+        <visual>
+            <origin rpy="${cover_frame_visual_origin_rpy}" xyz="${cover_frame_visual_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${cover_frame_visual_geometry_mesh}"
+                      scale="${cover_frame_visual_geometry_scale}"/>
+            </geometry>
+            <material name="${cover_frame_visual_material}"/>
+        </visual>
+        <collision>
+            <origin rpy="${cover_frame_collision_origin_rpy}" xyz="${cover_frame_collision_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${cover_frame_collision_geometry_mesh}"
+                      scale="${cover_frame_collision_geometry_scale}"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="lever_${box_name}">
+        <inertial>
+            <origin rpy="${lever_inertial_origin_rpy}" xyz="${lever_inertial_origin_xyz}"/>
+            <mass value="${lever_inertial_mass}"/>
+            <inertia ixx="${lever_inertial_inertia_ixx}"
+                     ixy="${lever_inertial_inertia_ixy}"
+                     ixz="${lever_inertial_inertia_ixy}"
+                     iyy="${lever_inertial_inertia_iyy}"
+                     iyz="${lever_inertial_inertia_iyz}"
+                     izz="${lever_inertial_inertia_izz}"/>
+        </inertial>
+        <visual>
+            <origin rpy="${lever_visual_origin_rpy}" xyz="${lever_visual_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${lever_visual_geometry_mesh}"
+                      scale="${lever_visual_geometry_scale}"/>
+            </geometry>
+            <material name="${lever_visual_material}"/>
+        </visual>
+        <collision>
+            <origin rpy="${lever_collision_origin_rpy}" xyz="${lever_collision_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${lever_collision_geometry_mesh}"
+                      scale="${lever_collision_geometry_scale}"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="cylinder_rod_left_${box_name}">
+        <inertial>
+            <origin rpy="${cylinder_rod_left_inertial_origin_rpy}" xyz="${cylinder_rod_left_inertial_origin_xyz}"/>
+            <mass value="${cylinder_rod_left_inertial_mass}"/>
+            <inertia ixx="${cylinder_rod_left_inertial_inertia_ixx}"
+                     ixy="${cylinder_rod_left_inertial_inertia_ixy}"
+                     ixz="${cylinder_rod_left_inertial_inertia_ixy}"
+                     iyy="${cylinder_rod_left_inertial_inertia_iyy}"
+                     iyz="${cylinder_rod_left_inertial_inertia_iyz}"
+                     izz="${cylinder_rod_left_inertial_inertia_izz}"/>
+        </inertial>
+        <visual>
+            <origin rpy="${cylinder_rod_left_visual_origin_rpy}" xyz="${cylinder_rod_left_visual_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${cylinder_rod_left_visual_geometry_mesh}"
+                      scale="${cylinder_rod_left_visual_geometry_scale}"/>
+            </geometry>
+            <material name="${cylinder_rod_left_visual_material}"/>
+        </visual>
+        <collision>
+            <origin rpy="${cylinder_rod_left_collision_origin_rpy}" xyz="${cylinder_rod_left_collision_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${cylinder_rod_left_collision_geometry_mesh}"
+                      scale="${cylinder_rod_left_collision_geometry_scale}"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="cylinder_rod_right_${box_name}">
+        <inertial>
+            <origin rpy="${cylinder_rod_right_inertial_origin_rpy}"
+                    xyz="${cylinder_rod_right_inertial_origin_xyz}"/>
+            <mass value="${cylinder_rod_right_inertial_mass}"/>
+            <inertia ixx="${cylinder_rod_right_inertial_inertia_ixx}"
+                     ixy="${cylinder_rod_right_inertial_inertia_ixy}"
+                     ixz="${cylinder_rod_right_inertial_inertia_ixy}"
+                     iyy="${cylinder_rod_right_inertial_inertia_iyy}"
+                     iyz="${cylinder_rod_right_inertial_inertia_iyz}"
+                     izz="${cylinder_rod_right_inertial_inertia_izz}"/>
+        </inertial>
+        <visual>
+            <origin rpy="${cylinder_rod_right_visual_origin_rpy}" xyz="${cylinder_rod_right_visual_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${cylinder_rod_right_visual_geometry_mesh}"
+                      scale="${cylinder_rod_right_visual_geometry_scale}"/>
+            </geometry>
+            <material name="${cylinder_rod_right_visual_material}"/>
+        </visual>
+        <collision>
+            <origin rpy="${cylinder_rod_right_collision_origin_rpy}"
+                    xyz="${cylinder_rod_right_collision_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${cylinder_rod_right_collision_geometry_mesh}"
+                      scale="${cylinder_rod_right_collision_geometry_scale}"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="cylinder_body_left_${box_name}">
+        <inertial>
+            <origin rpy="${cylinder_body_left_inertial_origin_rpy}" xyz="${cylinder_body_left_inertial_origin_xyz}"/>
+            <mass value="${cylinder_body_left_inertial_mass}"/>
+            <inertia ixx="${cylinder_body_left_inertial_inertia_ixx}"
+                     ixy="${cylinder_body_left_inertial_inertia_ixy}"
+                     ixz="${cylinder_body_left_inertial_inertia_ixy}"
+                     iyy="${cylinder_body_left_inertial_inertia_iyy}"
+                     iyz="${cylinder_body_left_inertial_inertia_iyz}"
+                     izz="${cylinder_body_left_inertial_inertia_izz}"/>
+        </inertial>
+        <visual>
+            <origin rpy="${cylinder_body_left_visual_origin_rpy}" xyz="${cylinder_body_left_visual_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${cylinder_body_left_visual_geometry_mesh}"
+                      scale="${cylinder_body_left_visual_geometry_scale}"/>
+            </geometry>
+            <material name="${cylinder_body_left_visual_material}"/>
+        </visual>
+        <collision>
+            <origin rpy="${cylinder_body_left_collision_origin_rpy}" xyz="${cylinder_body_left_collision_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${cylinder_body_left_collision_geometry_mesh}"
+                      scale="${cylinder_body_left_collision_geometry_scale}"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="cylinder_body_right_${box_name}">
+        <inertial>
+            <origin rpy="${cylinder_body_right_inertial_origin_rpy}" xyz="${cylinder_body_right_inertial_origin_xyz}"/>
+            <mass value="${cylinder_body_right_inertial_mass}"/>
+            <inertia ixx="${cylinder_body_right_inertial_inertia_ixx}"
+                     ixy="${cylinder_body_right_inertial_inertia_ixy}"
+                     ixz="${cylinder_body_right_inertial_inertia_ixy}"
+                     iyy="${cylinder_body_right_inertial_inertia_iyy}"
+                     iyz="${cylinder_body_right_inertial_inertia_iyz}"
+                     izz="${cylinder_body_right_inertial_inertia_izz}"/>
+        </inertial>
+        <visual>
+            <origin rpy="${cylinder_body_right_visual_origin_rpy}" xyz="${cylinder_body_right_visual_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${cylinder_body_right_visual_geometry_mesh}"
+                      scale="${cylinder_body_right_visual_geometry_scale}"/>
+            </geometry>
+            <material name="${cylinder_body_right_visual_material}"/>
+        </visual>
+        <collision>
+            <origin rpy="${cylinder_body_right_collision_origin_rpy}" xyz="${cylinder_body_right_collision_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${cylinder_body_right_collision_geometry_mesh}"
+                      scale="${cylinder_body_right_collision_geometry_scale}"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="adapter_plate_${box_name}">
+        <inertial>
+            <origin rpy="${adapter_plate_inertial_origin_rpy}" xyz="${adapter_plate_inertial_origin_xyz}"/>
+            <mass value="${adapter_plate_inertial_mass}"/>
+            <inertia ixx="${adapter_plate_inertial_inertia_ixx}"
+                     ixy="${adapter_plate_inertial_inertia_ixy}"
+                     ixz="${adapter_plate_inertial_inertia_ixy}"
+                     iyy="${adapter_plate_inertial_inertia_iyy}"
+                     iyz="${adapter_plate_inertial_inertia_iyz}"
+                     izz="${adapter_plate_inertial_inertia_izz}"/>
+        </inertial>
+        <visual>
+            <origin rpy="${adapter_plate_visual_origin_rpy}" xyz="${adapter_plate_visual_origin_xyz}"/>
+            <geometry>
+                <!--mesh filename="package://${package_name}/meshes/${adapter_plate_visual_geometry_mesh}"
+                      scale="${adapter_plate_visual_geometry_scale}"/-->
+                <mesh filename="package://${package_name}/meshes/${adapter_plate_collision_geometry_mesh}"
+                      scale="${adapter_plate_collision_geometry_scale}"/>
+            </geometry>
+            <material name="${adapter_plate_visual_material}"/>
+        </visual>
+        <collision>
+            <origin rpy="${adapter_plate_collision_origin_rpy}" xyz="${adapter_plate_collision_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${adapter_plate_collision_geometry_mesh}"
+                      scale="${adapter_plate_collision_geometry_scale}"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="cover_binder_${box_name}">
+        <inertial>
+            <origin rpy="${cover_binder_inertial_origin_rpy}" xyz="${cover_binder_inertial_origin_xyz}"/>
+            <mass value="${cover_binder_inertial_mass}"/>
+            <inertia ixx="${cover_binder_inertial_inertia_ixx}"
+                     ixy="${cover_binder_inertial_inertia_ixy}"
+                     ixz="${cover_binder_inertial_inertia_ixy}"
+                     iyy="${cover_binder_inertial_inertia_iyy}"
+                     iyz="${cover_binder_inertial_inertia_iyz}"
+                     izz="${cover_binder_inertial_inertia_izz}"/>
+        </inertial>
+        <visual>
+            <origin rpy="${cover_binder_visual_origin_rpy}" xyz="${cover_binder_visual_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${cover_binder_visual_geometry_mesh}"
+                      scale="${cover_binder_visual_geometry_scale}"/>
+            </geometry>
+            <material name="${cover_binder_visual_material}"/>
+        </visual>
+        <collision>
+            <origin rpy="${cover_binder_collision_origin_rpy}" xyz="${cover_binder_collision_origin_xyz}"/>
+            <geometry>
+                <mesh filename="package://${package_name}/meshes/${cover_binder_collision_geometry_mesh}"
+                      scale="${cover_binder_collision_geometry_scale}"/>
+            </geometry>
+        </collision>
+    </link>
+
+    <joint name="boxcover_joint_${box_name}" type="revolute">
+        <origin rpy="${boxcover_joint_origin_rpy}" xyz="${boxcover_joint_origin_xyz}"/>
+        <parent link="${box_name}"/>
+        <child link="cover_frame_${box_name}"/>
+        <axis xyz="${boxcover_joint_axis_xyz}"/>
+        <limit effort="${boxcover_joint_limit_effort}"
+               lower="${boxcover_joint_limit_lower}"
+               upper="${boxcover_joint_limit_upper}"
+               velocity="${boxcover_joint_limit_velocity}"/>
+        <dynamics damping="0.03" friction="0.01"/>
+    </joint>
+    <gazebo reference="boxcover_joint_${box_name}">
+        <implicitSpringDamper>True</implicitSpringDamper>
+        <dampingFactor>0.1</dampingFactor>
+    </gazebo>
+
+    <joint name="boxlever_joint_${box_name}" type="revolute">
+        <origin rpy="${boxlever_joint_origin_rpy}" xyz="${boxlever_joint_origin_xyz}"/>
+        <parent link="${box_name}"/>
+        <child link="lever_${box_name}"/>
+        <axis xyz="${boxlever_joint_axis_xyz}"/>
+        <limit effort="${boxlever_joint_limit_effort}"
+               lower="${boxlever_joint_limit_lower}"
+               upper="${boxlever_joint_limit_upper}"
+               velocity="${boxlever_joint_limit_velocity}"/>
+        <dynamics damping="0.03" friction="0.1"/>
+    </joint>
+    <gazebo reference="boxlever_joint_${box_name}">
+        <implicitSpringDamper>True</implicitSpringDamper>
+        <dampingFactor>0.1</dampingFactor>
+    </gazebo>
+
+    <joint name="boxcylinder_left_joint_${box_name}" type="revolute">
+        <origin rpy="${boxcylinder_left_joint_origin_rpy}" xyz="${boxcylinder_left_joint_origin_xyz}"/>
+        <parent link="${box_name}"/>
+        <child link="cylinder_rod_left_${box_name}"/>
+        <axis xyz="${boxcylinder_left_joint_axis_xyz}"/>
+        <limit effort="${boxcylinder_left_joint_limit_effort}"
+               lower="${boxcylinder_left_joint_limit_lower}"
+               upper="${boxcylinder_left_joint_limit_upper}"
+               velocity="${boxcylinder_left_joint_limit_velocity}"/>
+        <dynamics damping="0.03" friction="0.01"/>
+    </joint>
+    <gazebo reference="boxcylinder_left_joint_${box_name}">
+        <implicitSpringDamper>True</implicitSpringDamper>
+        <dampingFactor>0.1</dampingFactor>
+    </gazebo>
+
+    <joint name="boxcylinder_right_joint_${box_name}" type="revolute">
+        <origin rpy="${boxcylinder_right_joint_origin_rpy}" xyz="${boxcylinder_right_joint_origin_xyz}"/>
+        <parent link="${box_name}"/>
+        <child link="cylinder_rod_right_${box_name}"/>
+        <axis xyz="${boxcylinder_right_joint_axis_xyz}"/>
+        <limit effort="${boxcylinder_right_joint_limit_effort}"
+               lower="${boxcylinder_right_joint_limit_lower}"
+               upper="${boxcylinder_right_joint_limit_upper}"
+               velocity="${boxcylinder_right_joint_limit_velocity}"/>
+        <dynamics damping="0.03" friction="0.01"/>
+    </joint>
+    <gazebo reference="boxcylinder_right_joint_${box_name}">
+        <implicitSpringDamper>True</implicitSpringDamper>
+        <dampingFactor>0.1</dampingFactor>
+    </gazebo>
+
+    <joint name="covercylinder_left_joint_${box_name}" type="revolute">
+        <origin rpy="${covercylinder_left_joint_origin_rpy}" xyz="${covercylinder_left_joint_origin_xyz}"/>
+        <parent link="cover_frame_${box_name}"/>
+        <child link="cylinder_body_left_${box_name}"/>
+        <axis xyz="${covercylinder_left_joint_axis_xyz}"/>
+        <limit effort="${covercylinder_left_joint_limit_effort}"
+               lower="${covercylinder_left_joint_limit_lower}"
+               upper="${covercylinder_left_joint_limit_upper}"
+               velocity="${covercylinder_left_joint_limit_velocity}"/>
+        <dynamics damping="0.3" friction="0.1"/>
+    </joint>
+    <gazebo reference="covercylinder_left_joint_${box_name}">
+        <implicitSpringDamper>True</implicitSpringDamper>
+        <dampingFactor>0.1</dampingFactor>
+    </gazebo>
+
+    <joint name="covercylinder_right_joint_${box_name}" type="revolute">
+        <origin rpy="${covercylinder_right_joint_origin_rpy}" xyz="${covercylinder_right_joint_origin_xyz}"/>
+        <parent link="cover_frame_${box_name}"/>
+        <child link="cylinder_body_right_${box_name}"/>
+        <axis xyz="${covercylinder_right_joint_axis_xyz}"/>
+        <limit effort="${covercylinder_right_joint_limit_effort}"
+               lower="${covercylinder_right_joint_limit_lower}"
+               upper="${covercylinder_right_joint_limit_upper}"
+               velocity="${covercylinder_right_joint_limit_velocity}"/>
+        <dynamics damping="0.3" friction="0.1"/>
+    </joint>
+    <gazebo reference="covercylinder_right_joint_${box_name}">
+        <implicitSpringDamper>True</implicitSpringDamper>
+        <dampingFactor>0.1</dampingFactor>
+    </gazebo>
+
+    <joint name="boxadapterplate_joint_${box_name}" type="fixed">
+        <origin rpy="${adapter_plate_joint_origin_rpy}" xyz="${adapter_plate_joint_origin_xyz}"/>
+        <parent link="${box_name}"/>
+        <child link="adapter_plate_${box_name}"/>
+    </joint>
+
+    <joint name="coverbinder_joint_${box_name}" type="fixed">
+        <origin rpy="${cover_binder_joint_origin_rpy}" xyz="${cover_binder_joint_origin_xyz}"/>
+        <parent link="cover_frame_${box_name}"/>
+        <child link="cover_binder_${box_name}"/>
+    </joint>
+
+    <!-- SDF injection to close the kinematic loop -->
+    <gazebo>
+        <joint name="cylinder_left_joint_${box_name}" type="prismatic">
+            <parent>cylinder_rod_left_${box_name}</parent>
+            <child>cylinder_body_left_${box_name}</child>
+            <axis>
+                <xyz>${cylinder_left_joint_axis_xyz}</xyz>
+                <limit>
+                    <effort>${cylinder_left_joint_limit_effort}</effort>
+                    <lower>${cylinder_left_joint_limit_lower}</lower>
+                    <upper>${cylinder_left_joint_limit_upper}</upper>
+                    <velocity>${cylinder_left_joint_limit_velocity}</velocity>
+                </limit>
+                <dynamics>
+                    <damping>0.03</damping>
+                    <friction>0.01</friction>
+                </dynamics>
+            </axis>
+        </joint>
+
+        <joint name="cylinder_right_joint_${box_name}" type="prismatic">
+            <parent>cylinder_rod_right_${box_name}</parent>
+            <child>cylinder_body_right_${box_name}</child>
+            <axis>
+                <xyz>${cylinder_right_joint_axis_xyz}</xyz>
+                <limit>
+                    <effort>${cylinder_right_joint_limit_effort}</effort>
+                    <lower>${cylinder_right_joint_limit_lower}</lower>
+                    <upper>${cylinder_right_joint_limit_upper}</upper>
+                    <velocity>${cylinder_right_joint_limit_velocity}</velocity>
+                </limit>
+                <dynamics>
+                    <damping>0.03</damping>
+                    <friction>0.01</friction>
+                </dynamics>
+            </axis>
+        </joint>
+    </gazebo>
+
+</robot>

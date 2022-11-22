@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <xacro:macro name="read_pcb_data" params="model_parameter_file">
+        <!-- Read .yaml files from disk, load content into properties -->
+        <xacro:property name="config_pcb_parameters" value="${load_yaml(model_parameter_file)}"/>
+
+        <!-- Extract subsections from yaml dictionaries -->
+        <xacro:property name="inertial" value="${config_pcb_parameters['inertial']}" scope="parent"/>
+        <xacro:property name="visual" value="${config_pcb_parameters['visual']}" scope="parent"/>
+        <xacro:property name="collision" value="${config_pcb_parameters['collision']}" scope="parent"/>
+
+
+        <!-- Extract parameters from subsections -->
+        <!-- Inertial parameters -->
+        <xacro:property name="inertial_origin_rpy" value="${inertial['origin']['rpy']}" scope="parent"/>
+        <xacro:property name="inertial_origin_xyz" value="${inertial['origin']['xyz']}" scope="parent"/>
+        <xacro:property name="inertial_mass" value="${inertial['mass']}" scope="parent"/>
+        <xacro:property name="inertial_inertia_ixx" value="${inertial['inertia']['ixx']}" scope="parent"/>
+        <xacro:property name="inertial_inertia_ixy" value="${inertial['inertia']['ixy']}" scope="parent"/>
+        <xacro:property name="inertial_inertia_ixz" value="${inertial['inertia']['ixz']}" scope="parent"/>
+        <xacro:property name="inertial_inertia_iyy" value="${inertial['inertia']['iyy']}" scope="parent"/>
+        <xacro:property name="inertial_inertia_iyz" value="${inertial['inertia']['iyz']}" scope="parent"/>
+        <xacro:property name="inertial_inertia_izz" value="${inertial['inertia']['izz']}" scope="parent"/>
+        <!-- Visual parameters -->
+        <xacro:property name="visual_origin_rpy" value="${visual['origin']['rpy']}" scope="parent"/>
+        <xacro:property name="visual_origin_xyz" value="${visual['origin']['xyz']}" scope="parent"/>
+        <xacro:property name="visual_geometry_mesh" value="${visual['geometry']['mesh']}" scope="parent"/>
+        <xacro:property name="visual_geometry_scale" value="${visual['geometry']['scale']}" scope="parent"/>
+        <xacro:property name="visual_material" value="${visual['material']}" scope="parent"/>
+        <!-- Collision parameters -->
+        <xacro:property name="collision_origin_rpy" value="${collision['origin']['rpy']}" scope="parent"/>
+        <xacro:property name="collision_origin_xyz" value="${collision['origin']['xyz']}" scope="parent"/>
+        <xacro:property name="collision_geometry_mesh" value="${collision['geometry']['mesh']}" scope="parent"/>
+        <xacro:property name="collision_geometry_scale" value="${collision['geometry']['scale']}" scope="parent"/>
+    </xacro:macro>
+</robot>

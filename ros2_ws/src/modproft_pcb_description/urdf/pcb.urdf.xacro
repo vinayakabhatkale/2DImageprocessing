@@ -1,0 +1,67 @@
+<?xml version="1.0" ?>
+<robot name="pcb" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:arg name="package_name" default="modproft_pcb_description" />
+  <xacro:arg name="entity_type" default="gbr007"/>
+  <xacro:arg name="entity_name" default=""/>
+
+  <xacro:property name="package_name" value="$(arg package_name)"/>
+  <xacro:property name="pcb_type" value="$(arg entity_type)"/>
+  <xacro:property name="pcb_name" value="$(arg entity_name)"/>
+
+  <xacro:include filename="$(find ${package_name})/urdf/inc/materials.xacro" />
+  <xacro:include filename="$(find ${package_name})/urdf/inc/pcb_common.xacro"/>
+
+  <xacro:read_pcb_data model_parameter_file="$(find ${package_name})/config/${pcb_type}.yaml" />
+
+  <link name="base_link"/>
+  <link name="${pcb_name}">
+    <inertial>
+      <origin rpy="${inertial_origin_rpy}" xyz="${inertial_origin_xyz}"/>
+      <mass value="${inertial_mass}"/>
+      <inertia ixx="${inertial_inertia_ixx}"
+               ixy="${inertial_inertia_ixy}"
+               ixz="${inertial_inertia_ixz}"
+               iyy="${inertial_inertia_iyy}"
+               iyz="${inertial_inertia_iyz}"
+               izz="${inertial_inertia_izz}"/>
+    </inertial>
+    <visual>
+      <origin rpy="${visual_origin_rpy}" xyz="${visual_origin_xyz}"/>
+      <geometry>
+        <mesh filename="package://${package_name}/meshes/${visual_geometry_mesh}" scale="${visual_geometry_scale}"/>
+      </geometry>
+      <material name="${visual_material}"/>
+    </visual>
+    <collision>
+      <origin rpy="${collision_origin_rpy}" xyz="${collision_origin_xyz}"/>
+      <geometry>
+        <mesh filename="package://${package_name}/meshes/${collision_geometry_mesh}" scale="${collision_geometry_scale}"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="world_joint_${pcb_name}" type="fixed">
+    <origin rpy="${visual_origin_rpy}" xyz="${visual_origin_xyz}"/>
+    <parent link="base_link"/>
+    <child link="${pcb_name}"/>
+  </joint>
+
+  <!-- Enable for ros2_control
+  <ros2_control name="${pcb_name}" type="system">
+    <hardware>
+      <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+    </hardware>
+  </ros2_control>
+
+  <gazebo>
+    <plugin filename="libgazebo_ros2_control.so" name="gazebo_ros2_control">
+      <ros>
+        <namespace>/${pcb_name}</namespace>
+        <remapping>/tf:=/${pcb_name}/tf</remapping>
+      </ros>
+      <parameters>$(find ${package_name})/config/${pcb_type}_controller.yaml</parameters>
+    </plugin>
+  </gazebo>
+  -->
+
+</robot>

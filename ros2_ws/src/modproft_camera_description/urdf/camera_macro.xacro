@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:arg name="package_name" default="modproft_camera_description" />
+
+  <xacro:property name="package_name" value="$(arg package_name)" />
+  <xacro:property name="camera_type" value="canon_powershot_g7_mk3" />
+
+  <xacro:include filename="$(find ${package_name})/urdf/inc/camera_common.xacro" />
+
+  <xacro:read_camera_data model_parameter_file="$(find ${package_name})/config/${camera_type}.yaml"/>
+
+  <xacro:macro name="generate_camera" params="prefix attachment_link">
+    <!-- Define gazebo sensor -->
+      <gazebo reference="${prefix}camera_link">
+        <sensor type="${sensor_type}" name="${prefix}camera">
+          <always_on>${sensor_always_on}</always_on>
+          <update_rate>${sensor_update_rate}</update_rate>
+          <camera name="${sensor_name}">
+            <horizontal_fov>${sensor_horizontal_fov}</horizontal_fov>
+            <image>
+              <width>${sensor_image_width}</width>
+              <height>${sensor_image_height}</height>
+              <format>${sensor_image_format}</format>
+            </image>
+            <clip>
+              <near>${sensor_image_clip_near}</near>
+              <far>${sensor_image_clip_far}</far>
+            </clip>
+            <distortion>
+              <k1>${sensor_image_distortion_k1}</k1>
+              <k2>${sensor_image_distortion_k2}</k2>
+              <k3>${sensor_image_distortion_k3}</k3>
+              <p1>${sensor_image_distortion_p1}</p1>
+              <p2>${sensor_image_distortion_p2}</p2>
+              <center>${sensor_image_distortion_center}</center>
+            </distortion>
+          </camera>
+          
+          <plugin name="${prefix}_${sensor_name}_camera_controller" filename="libgazebo_ros_camera.so">
+            <ros>
+              <imageTopicName>${prefix}/${sensor_name}/color/image_raw</imageTopicName>
+              <cameraInfoTopicName>${prefix}/${sensor_name}/color/camera_info</cameraInfoTopicName>
+              <depthImageTopicName>${prefix}/${sensor_name}/depth/image_raw</depthImageTopicName>
+              <depthImageCameraInfoTopicName>${prefix}/${sensor_name}/depth/camera_info</depthImageCameraInfoTopicName>
+              <pointCloudTopicName>${prefix}/${sensor_name}/depth/points</pointCloudTopicName>
+            </ros>
+            <camera_name>${prefix}_${sensor_name}_camera</camera_name>
+            <frame_name>${prefix}camera_link</frame_name>
+            <hack_baseline>${sensor_hack_baseline}</hack_baseline>
+            <min_depth>${sensor_min_depth}</min_depth>
+          </plugin>
+        </sensor>
+      </gazebo>
+  
+    <!-- Links -->
+    <link name="${prefix}camera_link">
+      <visual>
+        <origin rpy="${camera_visual_origin_rpy}" xyz="${camera_visual_origin_xyz}"/>
+        <geometry>
+          <mesh filename="package://${package_name}/meshes/${camera_visual_geometry_mesh}" scale="${camera_visual_geometry_scale}"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin rpy="${camera_collision_origin_rpy}" xyz="${camera_collision_origin_xyz}"/>
+        <geometry>
+          <mesh filename="package://${package_name}/meshes/${camera_visual_geometry_mesh}" scale="${camera_visual_geometry_scale}"/>
+        </geometry>
+        <material name="${camera_visual_material}"/>
+      </collision>
+      <inertial>
+        <mass value="${camera_inertial_mass}"/>
+        <origin rpy="${camera_inertial_origin_rpy}" xyz="${camera_inertial_origin_xyz}"/>
+        <inertia ixx="${camera_inertial_inertia_ixx}" ixy="${camera_inertial_inertia_ixy}" ixz="${camera_inertial_inertia_ixz}" iyy="${camera_inertial_inertia_iyy}" iyz="${camera_inertial_inertia_iyz}" izz="${camera_inertial_inertia_izz}"/>
+      </inertial>
+    </link>
+  
+    <!-- Joints -->
+    <joint type="fixed" name="${prefix}${attachment_link}_camera_joint">
+      <origin rpy="-1.57 0.0 0.0" xyz="${cameraattachment_joint_origin_xyz}"/>
+      <child link="${prefix}camera_link"/>
+      <parent link="${prefix}${attachment_link}"/>
+    </joint>
+ </xacro:macro>
+</robot>
