@@ -65,13 +65,14 @@ ARG _PY_SUFFIX=${USE_PYTHON_3_NOT_2:+3}
 ARG PYTHON=python${_PY_SUFFIX}
 ARG PIP=pip${_PY_SUFFIX}
 
-RUN apt-get update && apt-get install -y \
-    ${PYTHON} \
-    ${PYTHON}-pip
+RUN apt-get update \
+	&& apt-get install -y \
+	    ${PYTHON} \
+	    ${PYTHON}-pip
 
 RUN ${PIP} --no-cache-dir install --upgrade \
     pip \
-    setuptools
+    setuptools==58.2.0
 
 RUN ln -s $(which ${PYTHON}) /usr/local/bin/python
 
@@ -101,24 +102,28 @@ RUN apt-get update \
 		build-essential \
 		git \
 		liburdfdom-tools \
-		python3-colcon-common-extensions \
-		python3-colcon-mixin \
-		python3-rosdep \
-		python3-vcstool \
-		ros-foxy-gazebo* \
-		ros-foxy-gazebo-ros2-control \
-		ros-foxy-hls-lfcd-lds-driver \
-		ros-foxy-joint-state-publisher \
-		ros-foxy-joint-state-publisher-gui \
-		ros-foxy-moveit \
-		ros-foxy-moveit-servo \
-		ros-foxy-ros2-control \
-		ros-foxy-ros2-controllers \
-		ros-foxy-rqt \
-		ros-foxy-rviz2 \
-		ros-foxy-ur-client-library \
-		ros-foxy-ur-msgs \
-		ros-foxy-warehouse-ros-mongo \
+		${PYTHON}-colcon-common-extensions \
+		${PYTHON}-colcon-mixin \
+		${PYTHON}-rosdep \
+		${PYTHON}-vcstool \
+		ros-${ROS2_DISTRO}-gazebo* \
+		ros-${ROS2_DISTRO}-gazebo-ros2-control \
+		ros-${ROS2_DISTRO}-hls-lfcd-lds-driver \
+		ros-${ROS2_DISTRO}-joint-state-publisher \
+		ros-${ROS2_DISTRO}-joint-state-publisher-gui \
+		ros-${ROS2_DISTRO}-moveit \
+		ros-${ROS2_DISTRO}-moveit-common \
+		ros-${ROS2_DISTRO}-moveit-servo \
+		ros-${ROS2_DISTRO}-moveit-ros-perception \
+		ros-${ROS2_DISTRO}-pcl-conversions \
+		ros-${ROS2_DISTRO}-rosbag2 \
+		ros-${ROS2_DISTRO}-ros2-control \
+		ros-${ROS2_DISTRO}-ros2-controllers \
+		ros-${ROS2_DISTRO}-rqt \
+		ros-${ROS2_DISTRO}-rviz2 \
+		ros-${ROS2_DISTRO}-ur-client-library \
+		ros-${ROS2_DISTRO}-ur-msgs \
+		ros-${ROS2_DISTRO}-warehouse-ros-mongo \
 	&& rm -rf /var/lib/apt/lists/*
 	
 # Setup colcon mixin and metadata
