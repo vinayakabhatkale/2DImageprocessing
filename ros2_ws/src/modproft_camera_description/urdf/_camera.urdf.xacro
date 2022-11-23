@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://wiki.ros.org/xacro" name="camera_test">
    
    <!-- import macro-->
-   <xacro:include filename="$(find modproft_camera_description)/urdf/camera_macro_depreached.xacro"/>
+   <xacro:include filename="$(find modproft_camera_description)/urdf/camera_macro.xacro"/>
    
 
    <!-- create link fixed to the "world" -->

@@ -29,7 +29,7 @@ camera:
   
   sensor:
     type: "depth"
-    always_on: false
+    always_on: "false"
     update_rate: 1.0
     name: "Canon_Powershot_G7_MKIII"
     horizontal_fov: 1.047198
@@ -53,5 +53,5 @@ camera:
   joints:
     attachment_joint:
       origin:
-        rpy: "0.0 0.0 0.0"
+        rpy: "-1.57 0.0 0.0"
         xyz: "-0.045 0.05 0.08"

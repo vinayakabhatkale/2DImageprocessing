@@ -33,7 +33,7 @@
               <imageTopicName>${prefix}/camera/color/image_raw</imageTopicName>
               <cameraInfoTopicName>${prefix}/camera/color/camera_info</cameraInfoTopicName>
               <depthImageTopicName>${prefix}/camera/depth/image_raw</depthImageTopicName>
-              <depthImageCameraInfoTopicName>${prefix}/camera/depth/camera_info</depthImageCameraInfoTopicName>
+              <depthImageCameraInfoTopicName>/${prefix}/camera/depth/camera_info</depthImageCameraInfoTopicName>
               <pointCloudTopicName>${prefix}/camera/depth/points</pointCloudTopicName>
             </ros>
             <camera_name>${prefix}camera</camera_name>
@@ -71,5 +71,9 @@
       <child link="${prefix}camera_link"/>
       <parent link="${prefix}${attachment_link}"/>
     </joint>
- </xacro:macro>
+  </xacro:macro>
+
+  <xacro:generate_camera prefix="" attachment_link="tool0"/>
+
+
 </robot>

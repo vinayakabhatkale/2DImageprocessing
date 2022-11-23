@@ -4,7 +4,7 @@
    <!-- import macros-->
    <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
    <!-- <xacro:include filename="$(find modproft_camera_description)/urdf/camera_macro.xacro"/> -->
-   <xacro:include filename="$(find modproft_camera_description)/urdf/camera_macro_depreached.xacro"/>
+   <xacro:include filename="$(find modproft_camera_description)/urdf/camera_macro.xacro"/>
 
    <!-- robot definition -->
    

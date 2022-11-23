@@ -290,6 +290,7 @@ def generate_launch_description():
         },
     }
 
+    # Camera setup
     octomap_config = {"octomap_frame": "camera_link", 
                       "octomap_resolution": 0.05,
                       "max_range": 5.0}
