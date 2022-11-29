@@ -1,0 +1,8 @@
+{
+  "package_name": "rcontrol_msgs",
+  "non_idl_tuples": [
+    "/root/ModProFT/src/rcontrol_msgs:action/MoveCartesian.action",
+    "/root/ModProFT/src/rcontrol_msgs:action/MoveJoint.action",
+    "/root/ModProFT/src/rcontrol_msgs:action/MovePose.action"
+  ]
+}

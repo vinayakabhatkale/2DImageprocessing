@@ -19,7 +19,6 @@ sudo docker-compose -p ${PROJECT} -f ./docker/docker-compose.yml up -d
 ################################################################################
 
 # Display GUI through X Server by granting full access to any external client.
-#export DISPLAY=:0
 xhost +
 
 ################################################################################
