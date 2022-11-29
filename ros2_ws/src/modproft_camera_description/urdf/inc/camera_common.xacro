@@ -26,6 +26,9 @@
         <xacro:property name="camera_visual_geometry_mesh" value="${camera['visual']['geometry']['mesh']}" scope="parent"/>
         <xacro:property name="camera_visual_geometry_scale" value="${camera['visual']['geometry']['scale']}" scope="parent"/>
         <xacro:property name="camera_visual_material" value="${camera['visual']['material']}" scope="parent"/>
+        
+        <xacro:property name="virtual_visual_geometry_mesh" value="${camera['virtual']['visual']['geometry']['mesh']}" scope="parent"/>
+        <xacro:property name="virtual_visual_geometry_scale" value="${camera['virtual']['visual']['geometry']['scale']}" scope="parent"/>
         <!-- Collision parameters -->
         <xacro:property name="camera_collision_origin_rpy" value="${camera['collision']['origin']['rpy']}" scope="parent"/>
         <xacro:property name="camera_collision_origin_xyz" value="${camera['collision']['origin']['xyz']}" scope="parent"/>
@@ -50,8 +53,10 @@
         <xacro:property name="sensor_image_distortion_center" value="${camera['sensor']['image']['distortion']['center']}" scope="parent"/>
         <xacro:property name="sensor_hack_baseline" value="${camera['sensor']['hack_baseline']}" scope="parent"/>
         <xacro:property name="sensor_min_depth" value="${camera['sensor']['min_depth']}" scope="parent"/>
-        <!-- Joint -->
+        <!-- Joints -->
         <xacro:property name="cameraattachment_joint_origin_rpy" value="${camera['joints']['attachment_joint']['origin']['rpy']}" scope="parent"/>
         <xacro:property name="cameraattachment_joint_origin_xyz" value="${camera['joints']['attachment_joint']['origin']['xyz']}" scope="parent"/>
+        <xacro:property name="cameravirtual_joint_origin_rpy" value="${camera['joints']['virtual_joint']['origin']['rpy']}" scope="parent"/>
+        <xacro:property name="cameravirtual_joint_origin_xyz" value="${camera['joints']['virtual_joint']['origin']['xyz']}" scope="parent"/>
     </xacro:macro>
 </robot>

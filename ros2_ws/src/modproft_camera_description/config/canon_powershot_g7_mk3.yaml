@@ -1,7 +1,7 @@
 camera:
   inertial:
     origin:
-      rpy: "0 0 0"
+      rpy: "-1.57 1.57 0"
       xyz: "0 0 0"
     mass: "0.303"
     inertia:
@@ -13,7 +13,7 @@ camera:
       izz: "0.0001"
   visual:
     origin:
-      rpy: "0 0 0"
+      rpy: "-1.57 1.57 0"
       xyz: "0 0 0"
     geometry:
       mesh: "Canon_Powershot_G7_MKIII/canon_powershot_g7_mkiii_collision.stl"
@@ -21,11 +21,16 @@ camera:
     material: "silver"
   collision:
     origin:
-      rpy: "0 0 0"
+      rpy: "-1.57 1.57 0"
       xyz: "0 0 0"
     geometry:
       mesh: "Canon_Powershot_G7_MKIII/canon_powershot_g7_mkiii_visual.stl"
       scale: "0.001 0.001 0.001"
+  virtual:
+    visual:
+      geometry:
+        mesh: "Debug_Mesh/camera_arrow.stl"
+        scale: "0.001 0.001 0.001"
   
   sensor:
     type: "depth"
@@ -53,5 +58,9 @@ camera:
   joints:
     attachment_joint:
       origin:
-        rpy: "-1.57 0.0 0.0"
+        rpy: "0.0 -1.57 0.0"
         xyz: "-0.045 0.05 0.08"
+    virtual_joint:
+      origin:
+        rpy: "-1.57 0.0 -1.57"
+        xyz: "0.057 0 0.032"

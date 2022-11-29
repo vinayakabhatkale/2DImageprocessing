@@ -19,7 +19,7 @@ import os
 import yaml
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.conditions import IfCondition
 from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
@@ -36,18 +36,301 @@ def load_yaml(package_name, file_path):
     except OSError:  # parent of IOError, OSError *and* WindowsError where available
         return None
 
+def launch_setup(context, *args, **kwargs):
+    # Initialize Arguments
+    ur_type = LaunchConfiguration("ur_type")
+    robot_ip = LaunchConfiguration("robot_ip")
+    safety_limits = LaunchConfiguration("safety_limits")
+    safety_pos_margin = LaunchConfiguration("safety_pos_margin")
+    safety_k_position = LaunchConfiguration("safety_k_position")
+    # General arguments
+    description_package = LaunchConfiguration("description_package")
+    description_file = LaunchConfiguration("description_file")
+    moveit_config_package = LaunchConfiguration("moveit_config_package")
+    moveit_config_file = LaunchConfiguration("moveit_config_file")
+    prefix_lc = LaunchConfiguration("prefix")
+    prefix = str(prefix_lc.perform(context))
+    use_fake_hardware = LaunchConfiguration("use_fake_hardware")
+    fake_sensor_commands = LaunchConfiguration("fake_sensor_commands")
+    launch_rviz = LaunchConfiguration("launch_rviz")
+
+    joint_limit_params = PathJoinSubstitution(
+        [FindPackageShare(description_package), "config", ur_type, "joint_limits.yaml"]
+    )
+    kinematics_params = PathJoinSubstitution(
+        [FindPackageShare(description_package), "config", ur_type, "default_kinematics.yaml"]
+    )
+    physical_params = PathJoinSubstitution(
+        [FindPackageShare(description_package), "config", ur_type, "physical_parameters.yaml"]
+    )
+    visual_params = PathJoinSubstitution(
+        [FindPackageShare(description_package), "config", ur_type, "visual_parameters.yaml"]
+    )
+    script_filename = PathJoinSubstitution(
+        [FindPackageShare("ur_robot_driver"), "resources", "ros_control.urscript"]
+    )
+    input_recipe_filename = PathJoinSubstitution(
+        [FindPackageShare("ur_robot_driver"), "resources", "rtde_input_recipe.txt"]
+    )
+    output_recipe_filename = PathJoinSubstitution(
+        [FindPackageShare("ur_robot_driver"), "resources", "rtde_output_recipe.txt"]
+    )
+
+    robot_description_content = Command(
+        [
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
+            PathJoinSubstitution([FindPackageShare("modproft_ur_description"), "urdf", description_file]),
+            " ",
+            "robot_ip:=",
+            robot_ip,
+            " ",
+            "joint_limit_params:=",
+            joint_limit_params,
+            " ",
+            "kinematics_params:=",
+            kinematics_params,
+            " ",
+            "physical_params:=",
+            physical_params,
+            " ",
+            "visual_params:=",
+            visual_params,
+            " ",
+            "safety_limits:=",
+            safety_limits,
+            " ",
+            "safety_pos_margin:=",
+            safety_pos_margin,
+            " ",
+            "safety_k_position:=",
+            safety_k_position,
+            " ",
+            "name:=",
+            # Also ur_type parameter could be used but then the planning group names in yaml
+            # configs has to be updated!
+            "ur",
+            " ",
+            "script_filename:=",
+            script_filename,
+            " ",
+            "input_recipe_filename:=",
+            input_recipe_filename,
+            " ",
+            "output_recipe_filename:=",
+            output_recipe_filename,
+            " ",
+            "prefix:=",
+            prefix_lc,
+            " ",
+            "use_fake_hardware:=",
+            use_fake_hardware,
+            " ",
+            "fake_sensor_commands:=",
+            fake_sensor_commands,
+            " ",
+        ]
+    )
+    robot_description = {"robot_description": robot_description_content}
+
+    # MoveIt Configuration
+    robot_description_semantic_content = Command(
+        [
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
+            PathJoinSubstitution(
+                [FindPackageShare(moveit_config_package), "srdf", moveit_config_file]
+            ),
+            " ",
+            "name:=",
+            # Also ur_type parameter could be used but then the planning group names in yaml
+            # configs has to be updated!
+            "ur",
+            " ",
+            "prefix:=",
+            prefix_lc,
+            " ",
+        ]
+    )
+    robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
+
+    kinematics_yaml = load_yaml("ur_moveit_config", "config/kinematics.yaml")
+    robot_description_kinematics = {"robot_description_kinematics": kinematics_yaml}
+
+    # Planning Configuration
+    ompl_planning_pipeline_config = {
+        "move_group": {
+            "planning_plugin": "ompl_interface/OMPLPlanner",
+            "request_adapters": """default_planner_request_adapters/AddTimeOptimalParameterization default_planner_request_adapters/FixWorkspaceBounds default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision default_planner_request_adapters/FixStartStatePathConstraints""",
+            "start_state_max_bounds_error": 0.1,
+        }
+    }
+    ompl_planning_yaml = load_yaml("ur_moveit_config", "config/ompl_planning.yaml")
+    ompl_planning_pipeline_config["move_group"].update(ompl_planning_yaml)
+
+    # Trajectory Execution Configuration
+    controllers_yaml = load_yaml("ur_moveit_config", "config/controllers.yaml")
+    moveit_controllers = {
+        "moveit_simple_controller_manager": controllers_yaml,
+        "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
+    }
+
+    trajectory_execution = {
+        "moveit_manage_controllers": False,
+        "trajectory_execution.allowed_execution_duration_scaling": 1.2,
+        "trajectory_execution.allowed_goal_duration_margin": 0.5,
+        "trajectory_execution.allowed_start_tolerance": 0.01,
+    }
+
+    planning_scene_monitor_parameters = {
+        "publish_planning_scene": True,
+        "publish_geometry_updates": True,
+        "publish_state_updates": True,
+        "publish_transforms_updates": True,
+        "planning_scene_monitor_options": {
+            "name": "planning_scene_monitor",
+            "robot_description": "robot_description",
+            "joint_state_topic": "/joint_states",
+            "attached_collision_object_topic": "/move_group/planning_scene_monitor",
+            "publish_planning_scene_topic": "/move_group/publish_planning_scene",
+            "monitored_planning_scene_topic": "/move_group/monitored_planning_scene",
+            "wait_for_initial_state_timeout": 10.0,
+        },
+    }
+
+    # Camera setup
+    camera_configuration = load_yaml("modproft_camera_description", "config/canon_powershot_g7_mk3.yaml")
+
+    if prefix:
+        #camera_name = ''.join([prefix, str(camera_configuration["camera"]["sensor"]["name"])])
+        camera_name = str(camera_configuration["camera"]["sensor"]["name"])
+    else:
+        camera_name = str(camera_configuration["camera"]["sensor"]["name"])
+
+    octomap_updater_config = {
+        "sensors": [camera_name],
+        camera_name: {
+            "sensor_plugin": "occupancy_map_monitor/PointCloudOctomapUpdater",
+            "point_cloud_topic": "/{}".format('/'.join([camera_name, "points"])),
+            "max_range": 5.0,
+            "point_subsample": 1,
+            "padding_offset": 0.1,
+            "padding_scale": 1.0,
+            "max_update_rate": 0.1,
+            "filtered_cloud_topic": "/{}".format('/'.join([camera_name, "filtered_cloud"]))
+        }
+    }
+    
+    camera_link = "{}{}".format(camera_name, '_link')
+    camera_link_virtual = "{}{}".format(camera_name, '_virtual_frame_link')
+
+    octomap_config = {"octomap_frame": camera_link_virtual, 
+                      "octomap_resolution": 0.05,
+                      "max_range": 5.0}
+
+    # Start the actual move_group node/action server
+    move_group_node = Node(
+        package="moveit_ros_move_group",
+        executable="move_group",
+        output="screen",
+        parameters=[
+            robot_description,
+            robot_description_semantic,
+            robot_description_kinematics,
+            ompl_planning_pipeline_config,
+            trajectory_execution,
+            moveit_controllers,
+            planning_scene_monitor_parameters,
+            octomap_config,
+            octomap_updater_config,
+            {"use_sim_time": True}
+        ],
+    )
+
+    # Warehouse mongodb server
+    mongodb_server_node = Node(
+        package="warehouse_ros_mongo",
+        executable="mongo_wrapper_ros.py",
+        parameters=[
+            {"warehouse_port": 33829},
+            {"warehouse_host": "localhost"},
+            {"warehouse_plugin": "warehouse_ros_mongo::MongoDatabaseConnection"},
+            {"use_sim_time": True}
+        ],
+        output="screen",
+    )
+
+    # rviz with moveit configuration
+    rviz_config_file = PathJoinSubstitution(
+        [FindPackageShare(moveit_config_package), "rviz", "view_robot.rviz"]
+    )
+    rviz_node = Node(
+        package="rviz2",
+        condition=IfCondition(launch_rviz),
+        executable="rviz2",
+        name="rviz2_moveit",
+        output="log",
+        arguments=["-d", rviz_config_file],
+        parameters=[
+            robot_description,
+            robot_description_semantic,
+            ompl_planning_pipeline_config,
+            robot_description_kinematics,
+            {"use_sim_time": True}
+        ],
+    )
+
+    # Static TF
+    static_tf = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="static_transform_publisher",
+        output="log",
+        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "base_link"],
+        parameters=[{"use_sim_time": True}]
+    )
+
+    # Start the action server
+    moveit_action_server = Node(
+        name="moveit_action_server",
+        package="robotcontrol",
+        executable="moveit_action_server",
+        output="screen",
+        parameters=[
+            robot_description,
+            robot_description_semantic,
+            robot_description_kinematics,
+            ompl_planning_pipeline_config,
+            trajectory_execution,
+            moveit_controllers,
+            planning_scene_monitor_parameters,
+            {"use_sim_time": True}
+        ],
+    )
+
+    nodes_to_start = [
+        move_group_node,
+        mongodb_server_node,
+        rviz_node,
+        static_tf,
+        #moveit_action_server,
+    ]
+    return nodes_to_start
 
 def generate_launch_description():
     declared_arguments = []
     # UR specific arguments
     declared_arguments.append(
-        DeclareLaunchArgument("ur_type", description="Type/series of used UR robot.")
+        DeclareLaunchArgument(
+            "ur_type",
+            description="Type/series of used UR robot.",
+            choices=['ur3', 'ur3e', 'ur5', 'ur5e', 'ur10', 'ur10e', 'ur16e']
+        )
     )
-    # TODO(anyone): enable this when added into ROS2-foxy
-    # choices=['ur3', 'ur3e', 'ur5', 'ur5e', 'ur10', 'ur10e', 'ur16e']))
     declared_arguments.append(
         DeclareLaunchArgument(
-            "robot_ip", description="IP address by which the robot can be reached."
+            "robot_ip",
+            description="IP address by which the robot can be reached."
         )
     )
     declared_arguments.append(
@@ -130,277 +413,4 @@ def generate_launch_description():
         DeclareLaunchArgument("launch_rviz", default_value="true", description="Launch RViz?")
     )
 
-    # Initialize Arguments
-    ur_type = LaunchConfiguration("ur_type")
-    robot_ip = LaunchConfiguration("robot_ip")
-    safety_limits = LaunchConfiguration("safety_limits")
-    safety_pos_margin = LaunchConfiguration("safety_pos_margin")
-    safety_k_position = LaunchConfiguration("safety_k_position")
-    # General arguments
-    description_package = LaunchConfiguration("description_package")
-    description_file = LaunchConfiguration("description_file")
-    moveit_config_package = LaunchConfiguration("moveit_config_package")
-    moveit_config_file = LaunchConfiguration("moveit_config_file")
-    prefix = LaunchConfiguration("prefix")
-    use_fake_hardware = LaunchConfiguration("use_fake_hardware")
-    fake_sensor_commands = LaunchConfiguration("fake_sensor_commands")
-    launch_rviz = LaunchConfiguration("launch_rviz")
-
-    joint_limit_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "joint_limits.yaml"]
-    )
-    kinematics_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "default_kinematics.yaml"]
-    )
-    physical_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "physical_parameters.yaml"]
-    )
-    visual_params = PathJoinSubstitution(
-        [FindPackageShare(description_package), "config", ur_type, "visual_parameters.yaml"]
-    )
-    script_filename = PathJoinSubstitution(
-        [FindPackageShare("ur_robot_driver"), "resources", "ros_control.urscript"]
-    )
-    input_recipe_filename = PathJoinSubstitution(
-        [FindPackageShare("ur_robot_driver"), "resources", "rtde_input_recipe.txt"]
-    )
-    output_recipe_filename = PathJoinSubstitution(
-        [FindPackageShare("ur_robot_driver"), "resources", "rtde_output_recipe.txt"]
-    )
-
-    robot_description_content = Command(
-        [
-            PathJoinSubstitution([FindExecutable(name="xacro")]),
-            " ",
-            PathJoinSubstitution([FindPackageShare("modproft_ur_description"), "urdf", description_file]),
-            " ",
-            "robot_ip:=",
-            robot_ip,
-            " ",
-            "joint_limit_params:=",
-            joint_limit_params,
-            " ",
-            "kinematics_params:=",
-            kinematics_params,
-            " ",
-            "physical_params:=",
-            physical_params,
-            " ",
-            "visual_params:=",
-            visual_params,
-            " ",
-            "safety_limits:=",
-            safety_limits,
-            " ",
-            "safety_pos_margin:=",
-            safety_pos_margin,
-            " ",
-            "safety_k_position:=",
-            safety_k_position,
-            " ",
-            "name:=",
-            # Also ur_type parameter could be used but then the planning group names in yaml
-            # configs has to be updated!
-            "ur",
-            " ",
-            "script_filename:=",
-            script_filename,
-            " ",
-            "input_recipe_filename:=",
-            input_recipe_filename,
-            " ",
-            "output_recipe_filename:=",
-            output_recipe_filename,
-            " ",
-            "prefix:=",
-            prefix,
-            " ",
-            "use_fake_hardware:=",
-            use_fake_hardware,
-            " ",
-            "fake_sensor_commands:=",
-            fake_sensor_commands,
-            " ",
-        ]
-    )
-    robot_description = {"robot_description": robot_description_content}
-
-    # MoveIt Configuration
-    robot_description_semantic_content = Command(
-        [
-            PathJoinSubstitution([FindExecutable(name="xacro")]),
-            " ",
-            PathJoinSubstitution(
-                [FindPackageShare(moveit_config_package), "srdf", moveit_config_file]
-            ),
-            " ",
-            "name:=",
-            # Also ur_type parameter could be used but then the planning group names in yaml
-            # configs has to be updated!
-            "ur",
-            " ",
-            "prefix:=",
-            prefix,
-            " ",
-        ]
-    )
-    robot_description_semantic = {"robot_description_semantic": robot_description_semantic_content}
-
-    kinematics_yaml = load_yaml("ur_moveit_config", "config/kinematics.yaml")
-    robot_description_kinematics = {"robot_description_kinematics": kinematics_yaml}
-
-    # Planning Configuration
-    ompl_planning_pipeline_config = {
-        "move_group": {
-            "planning_plugin": "ompl_interface/OMPLPlanner",
-            "request_adapters": """default_planner_request_adapters/AddTimeOptimalParameterization default_planner_request_adapters/FixWorkspaceBounds default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision default_planner_request_adapters/FixStartStatePathConstraints""",
-            "start_state_max_bounds_error": 0.1,
-        }
-    }
-    ompl_planning_yaml = load_yaml("ur_moveit_config", "config/ompl_planning.yaml")
-    ompl_planning_pipeline_config["move_group"].update(ompl_planning_yaml)
-
-    # Trajectory Execution Configuration
-    controllers_yaml = load_yaml("ur_moveit_config", "config/controllers.yaml")
-    moveit_controllers = {
-        "moveit_simple_controller_manager": controllers_yaml,
-        "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
-    }
-
-    trajectory_execution = {
-        "moveit_manage_controllers": False,
-        "trajectory_execution.allowed_execution_duration_scaling": 1.2,
-        "trajectory_execution.allowed_goal_duration_margin": 0.5,
-        "trajectory_execution.allowed_start_tolerance": 0.01,
-    }
-
-    planning_scene_monitor_parameters = {
-        "publish_planning_scene": True,
-        "publish_geometry_updates": True,
-        "publish_state_updates": True,
-        "publish_transforms_updates": True,
-        "planning_scene_monitor_options": {
-            "name": "planning_scene_monitor",
-            "robot_description": "robot_description",
-            "joint_state_topic": "/joint_states",
-            "attached_collision_object_topic": "/move_group/planning_scene_monitor",
-            "publish_planning_scene_topic": "/move_group/publish_planning_scene",
-            "monitored_planning_scene_topic": "/move_group/monitored_planning_scene",
-            "wait_for_initial_state_timeout": 10.0,
-        },
-    }
-
-    # Camera setup
-    octomap_config = {"octomap_frame": "camera_link", 
-                      "octomap_resolution": 0.05,
-                      "max_range": 5.0}
-
-    octomap_updater_config = load_yaml("modproft_ur_bringup", "config/sensors_3d.yaml")
-
-
-    # Start the actual move_group node/action server
-    move_group_node = Node(
-        package="moveit_ros_move_group",
-        executable="move_group",
-        output="screen",
-        parameters=[
-            robot_description,
-            robot_description_semantic,
-            robot_description_kinematics,
-            ompl_planning_pipeline_config,
-            trajectory_execution,
-            moveit_controllers,
-            planning_scene_monitor_parameters,
-            octomap_config,
-            octomap_updater_config,
-            {"use_sim_time": True}
-        ],
-    )
-
-    # Warehouse mongodb server
-    mongodb_server_node = Node(
-        package="warehouse_ros_mongo",
-        executable="mongo_wrapper_ros.py",
-        parameters=[
-            {"warehouse_port": 33829},
-            {"warehouse_host": "localhost"},
-            {"warehouse_plugin": "warehouse_ros_mongo::MongoDatabaseConnection"},
-            {"use_sim_time": True}
-        ],
-        output="screen",
-    )
-
-    # rviz with moveit configuration
-    rviz_config_file = PathJoinSubstitution(
-        [FindPackageShare(moveit_config_package), "rviz", "view_robot.rviz"]
-    )
-    rviz_node = Node(
-        package="rviz2",
-        condition=IfCondition(launch_rviz),
-        executable="rviz2",
-        name="rviz2_moveit",
-        output="log",
-        arguments=["-d", rviz_config_file],
-        parameters=[
-            robot_description,
-            robot_description_semantic,
-            ompl_planning_pipeline_config,
-            robot_description_kinematics,
-            {"use_sim_time": True}
-        ],
-    )
-
-    # Static TF
-    static_tf = Node(
-        package="tf2_ros",
-        executable="static_transform_publisher",
-        name="static_transform_publisher",
-        output="log",
-        arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "base_link"],
-        parameters=[{"use_sim_time": True}]
-    )
-
-    to_camera = Node(package='tf2_ros',
-                    executable='static_transform_publisher',
-                    name='to_camera',
-                    output='log',
-                    arguments=['0.0456182184306', '0.920306921713', '0.173307732431', '0.281265880202', '0.285536901533', '-0.660771825434', '0.634617031926', 'world', 'camera_link'],
-                    parameters=[{"use_sim_time": True}])
-
-    to_camera_rgb = Node(package='tf2_ros',
-                    executable='static_transform_publisher',
-                    name='to_camera_rgb',
-                    output='log',
-                    arguments=['-0.0', '0.015', '-0.0', '-0.501', '0.500', '-0.495', '0.504', 'camera_link', 'camera_rgb_optical_frame'],
-                    parameters=[{"use_sim_time": True}])
-
-
-    # Start the action server
-    moveit_action_server = Node(
-        name="moveit_action_server",
-        package="robotcontrol",
-        executable="moveit_action_server",
-        output="screen",
-        parameters=[
-            robot_description,
-            robot_description_semantic,
-            robot_description_kinematics,
-            ompl_planning_pipeline_config,
-            trajectory_execution,
-            moveit_controllers,
-            planning_scene_monitor_parameters,
-            {"use_sim_time": True}
-        ],
-    )
-
-    nodes_to_start = [
-        move_group_node,
-        mongodb_server_node,
-        rviz_node,
-        static_tf,
-        #moveit_action_server,
-        to_camera,
-        to_camera_rgb,
-    ]
-
-    return LaunchDescription(declared_arguments + nodes_to_start)
+    return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

@@ -121,6 +121,8 @@ RUN apt-get update \
 		ros-${ROS2_DISTRO}-ros2-controllers \
 		ros-${ROS2_DISTRO}-rqt \
 		ros-${ROS2_DISTRO}-rviz2 \
+		ros-${ROS2_DISTRO}-tf2-tools \
+		ros-${ROS2_DISTRO}-tf-transformations \
 		ros-${ROS2_DISTRO}-ur-client-library \
 		ros-${ROS2_DISTRO}-ur-msgs \
 		ros-${ROS2_DISTRO}-warehouse-ros-mongo \

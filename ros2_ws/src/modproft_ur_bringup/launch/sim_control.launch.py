@@ -277,7 +277,12 @@ def generate_launch_description():
         package="robot_state_publisher",
         executable="robot_state_publisher",
         output="both",
-        parameters=[robot_description],
+        parameters=[
+            {
+                "robot_description": robot_description_content,
+                "publish_frequency": 50.0
+            }
+        ],
     )
 
     rviz_node = Node(
