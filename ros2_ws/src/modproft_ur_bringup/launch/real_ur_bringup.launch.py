@@ -22,6 +22,7 @@ def generate_launch_description():
                                       "robot_ip":"192.168.1.20",
                                       "use_fake_hardware":"false",
                                       "launch_rviz":"false",
+                                      "controllers_file":"real_ur_controllers.yaml"
                                      }.items())
 
     moveit_config = IncludeLaunchDescription(PythonLaunchDescriptionSource(moveit_config),
@@ -29,6 +30,7 @@ def generate_launch_description():
                                       "robot_ip":"192.168.1.20",
                                       "use_fake_hardware":"false",
                                       "launch_rviz":"true",
+                                      "use_sim_time":"false",
                                      }.items())
 
     ld.add_action(ur_bringup)
