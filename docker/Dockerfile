@@ -2,6 +2,8 @@ FROM ubuntu:20.04
 
 LABEL maintainer="maximilian.schnitzler@hs-augsburg.de"
 
+EXPOSE 50001-50004
+
 #########################
 ##    System Setup     ##
 #########################
@@ -225,3 +227,4 @@ RUN ln -s /home/${USER}/ROS_Foxy_ModProFT/install/modproft_adapter_description/s
 RUN ln -s /home/${USER}/ROS_Foxy_ModProFT/install/modproft_camera_description/share/modproft_camera_description/ /home/${USER}/.gazebo/models/modproft_camera_description
 
 WORKDIR /home/${USER}/
+

@@ -45,6 +45,9 @@
 
 // ROS
 #include "rclcpp/macros.hpp"
+#include "rclcpp_lifecycle/state.hpp"
+#include "geometry_msgs/msg/transform_stamped.hpp"
+#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 
 using hardware_interface::HardwareInfo;
 using hardware_interface::return_type;
@@ -81,6 +84,7 @@ public:
   std::vector<hardware_interface::StateInterface> export_state_interfaces() final;
 
   std::vector<hardware_interface::CommandInterface> export_command_interfaces() final;
+
 
   status get_status() const final
   {
@@ -120,6 +124,8 @@ protected:
   void initAsyncIO();
   void checkAsyncIO();
   void updateNonDoubleValues();
+  void extractToolPose();
+  void transformForceTorque();
 
   HardwareInfo info_;
   status status_;
@@ -157,18 +163,28 @@ protected:
   std::bitset<4> robot_status_bits_;
   std::bitset<11> safety_status_bits_;
 
+  // transform stuff
+  tf2::Vector3 tcp_force_;
+  tf2::Vector3 tcp_torque_;
+  geometry_msgs::msg::TransformStamped tcp_transform_;
+
   // asynchronous commands
   std::array<double, 18> standard_dig_out_bits_cmd_;
   std::array<double, 2> standard_analog_output_cmd_;
   double io_async_success_;
   double target_speed_fraction_cmd_;
   double scaling_async_success_;
+  double resend_robot_program_cmd_;
+  double resend_robot_program_async_success_;
   bool first_pass_;
   bool initialized_;
   double system_interface_initialized_;
   bool async_thread_shutdown_;
-  double resend_robot_program_cmd_;
-  double resend_robot_program_async_success_;
+
+  // payload stuff
+  urcl::vector3d_t payload_center_of_gravity_;
+  double payload_mass_;
+  double payload_async_success_;
 
   // copy of non double values
   std::array<double, 18> actual_dig_out_bits_copy_;

@@ -27,7 +27,7 @@ def generate_launch_description():
                                       "robot_ip":"yyy.yyy.yyy.yyy",
                                       "use_fake_hardware":"true",
                                       "launch_rviz":"false",
-                                      "use_sim_time":"true"
+                                      "controllers_file":"sim_controllers.yaml"
                                      }.items())
 
     moveit_config = IncludeLaunchDescription(PythonLaunchDescriptionSource(moveit_config),
@@ -35,7 +35,7 @@ def generate_launch_description():
                                       "robot_ip":"xxx.xxx",
                                       "use_fake_hardware":"true",
                                       "launch_rviz":"true",
-                                      "use_sim_time":"true"
+                                      "use_sim_time":"true",
                                      }.items())
 
     adapter_bringup = IncludeLaunchDescription(PythonLaunchDescriptionSource(adapter_bringup),
