@@ -54,6 +54,8 @@ def launch_setup(context, *args, **kwargs):
     fake_sensor_commands = LaunchConfiguration("fake_sensor_commands")
     launch_rviz = LaunchConfiguration("launch_rviz")
 
+    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+
     joint_limit_params = PathJoinSubstitution(
         [FindPackageShare(description_package), "config", ur_type, "joint_limits.yaml"]
     )
@@ -243,7 +245,7 @@ def launch_setup(context, *args, **kwargs):
             planning_scene_monitor_parameters,
             octomap_config,
             octomap_updater_config,
-            {"use_sim_time": True}
+            {"use_sim_time": use_sim_time}
         ],
     )
 
@@ -255,7 +257,7 @@ def launch_setup(context, *args, **kwargs):
             {"warehouse_port": 33829},
             {"warehouse_host": "localhost"},
             {"warehouse_plugin": "warehouse_ros_mongo::MongoDatabaseConnection"},
-            {"use_sim_time": True}
+            {"use_sim_time": use_sim_time}
         ],
         output="screen",
     )
@@ -276,7 +278,7 @@ def launch_setup(context, *args, **kwargs):
             robot_description_semantic,
             ompl_planning_pipeline_config,
             robot_description_kinematics,
-            {"use_sim_time": True}
+            {"use_sim_time": use_sim_time}
         ],
     )
 
@@ -287,7 +289,7 @@ def launch_setup(context, *args, **kwargs):
         name="static_transform_publisher",
         output="log",
         arguments=["0.0", "0.0", "0.0", "0.0", "0.0", "0.0", "world", "base_link"],
-        parameters=[{"use_sim_time": True}]
+        parameters=[{"use_sim_time": use_sim_time}]
     )
 
     # Start the action server
@@ -304,7 +306,7 @@ def launch_setup(context, *args, **kwargs):
             trajectory_execution,
             moveit_controllers,
             planning_scene_monitor_parameters,
-            {"use_sim_time": True}
+            {"use_sim_time": use_sim_time}
         ],
     )
 

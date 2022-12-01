@@ -126,6 +126,10 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument("launch_rviz", default_value="true", description="Launch RViz?")
     )
+    declared_arguments.append(
+        DeclareLaunchArgument("use_sim_time", default_value="false", description="Used in simulation?")
+    )
+
 
     # Initialize Arguments
     ur_type = LaunchConfiguration("ur_type")
@@ -143,6 +147,9 @@ def generate_launch_description():
     fake_sensor_commands = LaunchConfiguration("fake_sensor_commands")
     robot_controller = LaunchConfiguration("robot_controller")
     launch_rviz = LaunchConfiguration("launch_rviz")
+
+    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+
 
     joint_limit_params = PathJoinSubstitution(
         [FindPackageShare(description_package), "config", ur_type, "joint_limits.yaml"]
@@ -239,7 +246,10 @@ def generate_launch_description():
     control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        parameters=[robot_description, robot_controllers],
+        parameters=[robot_description,
+                    robot_controllers,
+                    {"use_sim_time": use_sim_time}
+                    ],
         output={
             "stdout": "screen",
             "stderr": "screen",
@@ -280,7 +290,9 @@ def generate_launch_description():
         parameters=[
             {
                 "robot_description": robot_description_content,
-                "publish_frequency": 50.0
+                "publish_frequency": 80.0,
+                "use_sim_time": use_sim_time
+
             }
         ],
     )
