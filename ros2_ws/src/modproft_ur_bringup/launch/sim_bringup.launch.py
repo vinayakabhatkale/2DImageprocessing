@@ -27,7 +27,8 @@ def generate_launch_description():
                                       "robot_ip":"yyy.yyy.yyy.yyy",
                                       "use_fake_hardware":"true",
                                       "launch_rviz":"false",
-                                      "controllers_file":"sim_controllers.yaml"
+                                      "controllers_file":"sim_controllers.yaml",
+                                      "use_sim_time":"true"
                                      }.items())
 
     moveit_config = IncludeLaunchDescription(PythonLaunchDescriptionSource(moveit_config),

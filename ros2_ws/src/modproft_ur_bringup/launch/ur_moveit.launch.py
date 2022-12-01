@@ -296,7 +296,7 @@ def launch_setup(context, *args, **kwargs):
     # Start the action server
     moveit_action_server = Node(
         name="moveit_action_server",
-        package="robotcontrol",
+        package="modproft_robot_control",
         executable="moveit_action_server",
         output="screen",
         parameters=[
@@ -316,7 +316,7 @@ def launch_setup(context, *args, **kwargs):
         mongodb_server_node,
         rviz_node,
         static_tf,
-        #moveit_action_server,
+        moveit_action_server,
     ]
     return nodes_to_start
 
