@@ -230,6 +230,22 @@ std::vector<hardware_interface::CommandInterface> URPositionHardwareInterface::e
   command_interfaces.emplace_back(hardware_interface::CommandInterface(
       "speed_scaling", "target_speed_fraction_async_success", &scaling_async_success_));
 
+  command_interfaces.emplace_back(hardware_interface::CommandInterface(
+      "resend_robot_program", "resend_robot_program_cmd", &resend_robot_program_cmd_));
+
+  command_interfaces.emplace_back(hardware_interface::CommandInterface(
+      "resend_robot_program", "resend_robot_program_async_success", &resend_robot_program_async_success_));
+
+  command_interfaces.emplace_back(hardware_interface::CommandInterface("payload", "mass", &payload_mass_));
+  command_interfaces.emplace_back(
+      hardware_interface::CommandInterface("payload", "cog.x", &payload_center_of_gravity_[0]));
+  command_interfaces.emplace_back(
+      hardware_interface::CommandInterface("payload", "cog.y", &payload_center_of_gravity_[1]));
+  command_interfaces.emplace_back(
+      hardware_interface::CommandInterface("payload", "cog.z", &payload_center_of_gravity_[2]));
+  command_interfaces.emplace_back(
+      hardware_interface::CommandInterface("payload", "payload_async_success", &payload_async_success_));
+
   for (size_t i = 0; i < 18; ++i) {
     command_interfaces.emplace_back(hardware_interface::CommandInterface(
         "gpio", "standard_digital_output_cmd_" + std::to_string(i), &standard_dig_out_bits_cmd_[i]));
@@ -485,6 +501,10 @@ return_type URPositionHardwareInterface::read()
     readBitsetData<uint32_t>(data_pkg, "analog_io_types", analog_io_types_);
     readBitsetData<uint32_t>(data_pkg, "tool_analog_input_types", tool_analog_input_types_);
 
+    // required transforms
+    extractToolPose();
+    transformForceTorque();
+
     // TODO(anyone): logic for sending other stuff to higher level interface
 
     // pausing state follows runtime state when pausing
@@ -587,6 +607,9 @@ void URPositionHardwareInterface::initAsyncIO()
   for (size_t i = 0; i < 2; ++i) {
     standard_analog_output_cmd_[i] = NO_NEW_CMD_;
   }
+
+  payload_mass_ = NO_NEW_CMD_;
+  payload_center_of_gravity_ = { NO_NEW_CMD_, NO_NEW_CMD_, NO_NEW_CMD_ };
 }
 
 void URPositionHardwareInterface::checkAsyncIO()
@@ -618,6 +641,35 @@ void URPositionHardwareInterface::checkAsyncIO()
     scaling_async_success_ = ur_driver_->getRTDEWriter().sendSpeedSlider(target_speed_fraction_cmd_);
     target_speed_fraction_cmd_ = NO_NEW_CMD_;
   }
+
+  if (!std::isnan(resend_robot_program_cmd_) && ur_driver_ != nullptr) {
+    try {
+      resend_robot_program_async_success_ = ur_driver_->sendRobotProgram();
+    } catch (const urcl::UrException& e) {
+      RCLCPP_ERROR(rclcpp::get_logger("URPositionHardwareInterface"), "Service Call failed: '%s'", e.what());
+    }
+    resend_robot_program_cmd_ = NO_NEW_CMD_;
+  }
+
+  if (!std::isnan(payload_mass_) && !std::isnan(payload_center_of_gravity_[0]) &&
+      !std::isnan(payload_center_of_gravity_[1]) && !std::isnan(payload_center_of_gravity_[2]) &&
+      ur_driver_ != nullptr) {
+    try {
+      // create command as string from interfaces
+      // ROS1 driver hardware_interface.cpp#L450-L456
+      std::stringstream str_command;
+      str_command.imbue(std::locale::classic());
+      str_command << "sec setup():" << std::endl
+                  << " set_payload(" << payload_mass_ << ", [" << payload_center_of_gravity_[0] << ", "
+                  << payload_center_of_gravity_[1] << ", " << payload_center_of_gravity_[2] << "])" << std::endl
+                  << "end";
+      payload_async_success_ = ur_driver_->sendScript(str_command.str());
+    } catch (const urcl::UrException& e) {
+      RCLCPP_ERROR(rclcpp::get_logger("URPositionHardwareInterface"), "Service Call failed: '%s'", e.what());
+    }
+    payload_mass_ = NO_NEW_CMD_;
+    payload_center_of_gravity_ = { NO_NEW_CMD_, NO_NEW_CMD_, NO_NEW_CMD_ };
+  }
 }
 
 void URPositionHardwareInterface::updateNonDoubleValues()
@@ -646,6 +698,42 @@ void URPositionHardwareInterface::updateNonDoubleValues()
   tool_mode_copy_ = static_cast<double>(tool_mode_);
   system_interface_initialized_ = initialized_ ? 1.0 : 0.0;
   robot_program_running_copy_ = robot_program_running_ ? 1.0 : 0.0;
+}
+
+void URPositionHardwareInterface::transformForceTorque()
+{
+  // imported from ROS1 driver - hardware_interface.cpp#L867-L876
+  tcp_force_.setValue(urcl_ft_sensor_measurements_[0], urcl_ft_sensor_measurements_[1],
+                      urcl_ft_sensor_measurements_[2]);
+  tcp_torque_.setValue(urcl_ft_sensor_measurements_[3], urcl_ft_sensor_measurements_[4],
+                       urcl_ft_sensor_measurements_[5]);
+
+  tf2::Quaternion rotation_quat;
+  tf2::fromMsg(tcp_transform_.transform.rotation, rotation_quat);
+  tcp_force_ = tf2::quatRotate(rotation_quat.inverse(), tcp_force_);
+  tcp_torque_ = tf2::quatRotate(rotation_quat.inverse(), tcp_torque_);
+
+  urcl_ft_sensor_measurements_ = { tcp_force_.x(),  tcp_force_.y(),  tcp_force_.z(),
+                                   tcp_torque_.x(), tcp_torque_.y(), tcp_torque_.z() };
+}
+void URPositionHardwareInterface::extractToolPose()
+{
+  // imported from ROS1 driver hardware_interface.cpp#L911-L928
+  double tcp_angle =
+      std::sqrt(std::pow(urcl_tcp_pose_[3], 2) + std::pow(urcl_tcp_pose_[4], 2) + std::pow(urcl_tcp_pose_[5], 2));
+
+  tf2::Vector3 rotation_vec(urcl_tcp_pose_[3], urcl_tcp_pose_[4], urcl_tcp_pose_[5]);
+  tf2::Quaternion rotation;
+  if (tcp_angle > 1e-16) {
+    rotation.setRotation(rotation_vec.normalized(), tcp_angle);
+  } else {
+    rotation.setValue(0.0, 0.0, 0.0, 1.0);  // default Quaternion is 0,0,0,0 which is invalid
+  }
+  tcp_transform_.transform.translation.x = urcl_tcp_pose_[0];
+  tcp_transform_.transform.translation.y = urcl_tcp_pose_[1];
+  tcp_transform_.transform.translation.z = urcl_tcp_pose_[2];
+
+  tcp_transform_.transform.rotation = tf2::toMsg(rotation);
 }
 }  // namespace ur_robot_driver
 

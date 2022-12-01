@@ -34,11 +34,16 @@ services:
       #- /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
       # Grant access to serial usb ports for u2d2
       - /dev/for_docker:/dev/for_docker
+      - ../ur_driver_override/resources/ros_control.urscript:/home/developer/Universal_Robots_ROS2_Driver/src/ur_robot_driver/resources/ros_control.urscript
+      - ../ur_driver_override/include/ur_robot_driver/hardware_interface.hpp:/home/developer/Universal_Robots_ROS2_Driver/src/ur_robot_driver/include/ur_robot_driver/hardware_interface.hpp
+      - ../ur_driver_override/src/hardware_interface.cpp:/home/developer/Universal_Robots_ROS2_Driver/src/ur_robot_driver/src/hardware_interface.cpp
     devices:
       - '/dev:/dev'
-    network_mode: host
+    ports:
+      - 50001-50004:50001-50004
     extra_hosts:
       - "ros_dev_docker_lb:127.0.0.1"   # Seems that it might be needed for ROS networking
       - "ros_ros2_test:192.168.137.201"
     command: /home/developer/scripts/keep-running.bash
+
     
