@@ -219,7 +219,7 @@ def launch_setup(context, *args, **kwargs):
             "point_subsample": 1,
             "padding_offset": 0.1,
             "padding_scale": 1.0,
-            "max_update_rate": 0.1,
+            "max_update_rate": 0.5,
             "filtered_cloud_topic": "/{}".format('/'.join([camera_name, "filtered_cloud"]))
         }
     }

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import math
 import threading
 import time
@@ -8,7 +9,7 @@ import rclpy
 from rclpy.action import ActionClient
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.node import Node
-from rcontrol_msgs.action import MoveCartesian, MoveJoint, MovePose
+from modproft_robot_control_msgs.action import MoveCartesian, MoveJoint, MovePose
 
 
 class MoveItActionClient(Node):
@@ -124,7 +125,7 @@ def main(args=None):
 
     node = MoveItActionClient()
 
-    exec = MultiThreadedExecutor(num_threads=4)
+    exec = MultiThreadedExecutor(num_threads=8)
     thread = threading.Thread(target=run_executor, args=(exec, node), daemon=True)
     thread.start()
 
