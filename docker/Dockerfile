@@ -227,6 +227,8 @@ RUN ln -s /home/${USER}/ROS_Foxy_ModProFT/install/modproft_pcb_description/share
 
 RUN ln -s /home/${USER}/ROS_Foxy_ModProFT/install/modproft_adapter_description/share/modproft_adapter_description/ /home/${USER}/.gazebo/models/modproft_adapter_description
 
+RUN ln -s /home/${USER}/ROS_Foxy_ModProFT/install/modproft_manipulator_description/share/modproft_manipulator_description/ /home/${USER}/.gazebo/models/modproft_manipulator_description
+
 RUN ln -s /home/${USER}/ROS_Foxy_ModProFT/install/modproft_camera_description/share/modproft_camera_description/ /home/${USER}/.gazebo/models/modproft_camera_description
 
 WORKDIR /home/${USER}/
