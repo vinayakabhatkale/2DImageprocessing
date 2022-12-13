@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <xacro:property name="yaml_file" value="$(find modproft_common)/config/colors.yaml" />
+    <xacro:property name="colors" value="${load_yaml(yaml_file)}" />
+
+    <xacro:macro name="material_silver">
+        <material name="silver">
+            <color rgba="${colors['silver']['value']}" />
+        </material>
+    </xacro:macro>
+
+</robot>

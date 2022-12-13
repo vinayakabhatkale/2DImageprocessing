@@ -44,7 +44,7 @@ camera:
       format: R8G8B8
       clip:
         near: 0.05
-        far: 3.0
+        far: 6.0
       distortion:
         k1: 0.0
         k2: 0.0

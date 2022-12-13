@@ -4,7 +4,8 @@
    <xacro:macro name="generate_camera" params="prefix attachment_link package_name:=modproft_camera_description camera_type:=canon_powershot_g7_mk3 debug:=False">
   
     <xacro:include filename="$(find ${package_name})/urdf/inc/camera_common.xacro"/>
-    <xacro:include filename="$(find ${package_name})/urdf/inc/materials.xacro"/>
+    <!-- Uncomment for in-package colors -->
+    <!--<xacro:include filename="$(find ${package_name})/urdf/inc/materials.xacro"/>-->
 
     <xacro:read_camera_data model_parameter_file="$(find ${package_name})/config/${camera_type}.yaml"/>
 
@@ -72,7 +73,9 @@
         <geometry>
           <mesh filename="package://${package_name}/meshes/${camera_visual_geometry_mesh}" scale="${camera_visual_geometry_scale}"/>
         </geometry>
-        <material name="${camera_visual_material}"/>
+        <!-- Uncomment for in-package colors -->
+        <!--<material name="${camera_visual_material}"/>-->
+        <xacro:material_silver/>
       </collision>
       <inertial>
         <mass value="${camera_inertial_mass}"/>

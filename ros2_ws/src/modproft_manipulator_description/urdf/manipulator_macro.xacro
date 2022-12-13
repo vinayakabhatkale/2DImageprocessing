@@ -4,7 +4,8 @@
    <xacro:macro name="generate_manipulator" params="prefix attachment_link manipulator_name package_name:=modproft_manipulator_description manipulator_type:=manipulator_klinke_v2">
   
     <xacro:include filename="$(find ${package_name})/urdf/inc/manipulator_common.xacro"/>
-    <xacro:include filename="$(find ${package_name})/urdf/inc/materials.xacro"/>
+    <!-- Uncomment for in-package colors -->
+    <!--<xacro:include filename="$(find ${package_name})/urdf/inc/materials.xacro"/>-->
 
     <xacro:read_manipulator_data model_parameter_file="$(find ${package_name})/config/${manipulator_type}.yaml"/>
 
@@ -31,7 +32,9 @@
         <geometry>
           <mesh filename="package://${package_name}/meshes/${manipulator_visual_geometry_mesh}" scale="${manipulator_visual_geometry_scale}"/>
         </geometry>
-        <material name="${manipulator_visual_material}"/>
+        <!-- Uncomment for in-package colors -->
+        <!--<material name="${manipulator_visual_material}"/>-->
+        <xacro:material_silver/>
       </collision>
       <inertial>
         <mass value="${manipulator_inertial_mass}"/>

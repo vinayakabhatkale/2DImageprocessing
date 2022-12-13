@@ -53,9 +53,10 @@ def launch_setup(context, *args, **kwargs):
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     fake_sensor_commands = LaunchConfiguration("fake_sensor_commands")
     launch_rviz = LaunchConfiguration("launch_rviz")
-    use_sim_time = LaunchConfiguration("use_sim_time")
-
-    use_sim_time = LaunchConfiguration('use_sim_time', default='false')
+    sim_gazebo = LaunchConfiguration("sim_gazebo")
+    use_sim_time = LaunchConfiguration('use_sim_time')
+    runtime_config_package = LaunchConfiguration('runtime_config_package')
+    controllers_file = LaunchConfiguration('controllers_file')
 
     joint_limit_params = PathJoinSubstitution(
         [FindPackageShare(description_package), "config", ur_type, "joint_limits.yaml"]
@@ -77,6 +78,9 @@ def launch_setup(context, *args, **kwargs):
     )
     output_recipe_filename = PathJoinSubstitution(
         [FindPackageShare("ur_robot_driver"), "resources", "rtde_output_recipe.txt"]
+    )
+    initial_joint_controllers = PathJoinSubstitution(
+        [FindPackageShare(runtime_config_package), "config", controllers_file]
     )
 
     robot_description_content = Command(
@@ -132,6 +136,11 @@ def launch_setup(context, *args, **kwargs):
             "fake_sensor_commands:=",
             fake_sensor_commands,
             " ",
+            "sim_gazebo:=",
+            sim_gazebo,
+            " ",
+            "simulation_controllers:=",
+            initial_joint_controllers,
         ]
     )
     robot_description = {"robot_description": robot_description_content}
@@ -251,6 +260,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # Warehouse mongodb server
+    # Disabled, no clue what it does
     mongodb_server_node = Node(
         package="warehouse_ros_mongo",
         executable="mongo_wrapper_ros.py",
@@ -313,7 +323,7 @@ def launch_setup(context, *args, **kwargs):
 
     nodes_to_start = [
         move_group_node,
-        mongodb_server_node,
+        #mongodb_server_node,
         rviz_node,
         static_tf,
         moveit_action_server,
@@ -376,7 +386,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "moveit_config_package",
-            default_value="ur_moveit_config",
+            default_value="modproft_ur_moveit_config",
             description="MoveIt config package with robot SRDF/XACRO files. Usually the argument \
         is not set, it enables use of a custom moveit config.",
         )
@@ -417,10 +427,31 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
+            "sim_gazebo",
+            default_value="false",
+            description="Is Gazebo used as simulation environment.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
             "use_sim_time",
             default_value="false",
             description="Make MoveIt to use simulation time. This is needed for the trajectory planing in simulation.",
         )
     )
-
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "runtime_config_package",
+            default_value="modproft_ur_bringup",
+            description='Package with the controller\'s configuration in "config" folder. \
+        Usually the argument is not set, it enables use of a custom setup.',
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "controllers_file",
+            default_value="sim_ur_controllers.yaml",
+            description="YAML file with the controllers configuration.",
+        )
+    )
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

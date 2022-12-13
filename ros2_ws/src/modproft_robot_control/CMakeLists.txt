@@ -6,9 +6,9 @@ if(NOT CMAKE_C_STANDARD)
   set(CMAKE_C_STANDARD 99)
 endif()
 
-# Default to C++14
+# Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 17)
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -29,7 +29,22 @@ find_package(modproft_robot_control_msgs REQUIRED)
 include_directories(include)
 
 # Create Cpp executable
-add_executable(moveit_action_server src/moveit_action_server.cpp)
+#add_executable(moveit_action_server src/moveit_action_server.cpp)
+#target_include_directories(
+#  moveit_action_server
+#  PUBLIC
+#  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+#  $<INSTALL_INTERFACE:include>)
+#ament_target_dependencies(
+#  moveit_action_server
+#  rclcpp
+#  rclcpp_action
+#  rclcpp_components
+#  moveit_ros_planning_interface
+#  modproft_robot_control_msgs
+#  )
+  
+add_executable(moveit_action_server src/robot_controller.cpp)
 target_include_directories(
   moveit_action_server
   PUBLIC

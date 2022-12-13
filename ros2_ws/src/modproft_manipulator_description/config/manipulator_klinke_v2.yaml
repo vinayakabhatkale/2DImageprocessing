@@ -1,8 +1,8 @@
 manipulator:
   inertial:
     origin:
-      rpy: "0 0 0"
-      xyz: "0 0 0"
+      rpy: "3.14 0 0"
+      xyz: "-0.035 0.032 0.0306"
     mass: "0.01"
     inertia:
       ixx: "0.0001"
@@ -21,8 +21,8 @@ manipulator:
     material: "silver"
   collision:
     origin:
-      rpy: "0 0 0"
-      xyz: "0 0 0"
+      rpy: "3.14 0 0"
+      xyz: "-0.035 0.032 0.0306"
     geometry:
       mesh: "Klinke_v2/klinke_v2_visual.stl"
       scale: "0.001 0.001 0.001"
