@@ -217,7 +217,7 @@ def launch_setup(context, *args, **kwargs):
             "point_subsample": 1,
             "padding_offset": 0.1,
             "padding_scale": 1.0,
-            "max_update_rate": 0.1,
+            "max_update_rate": 0.5,
             "filtered_cloud_topic": "/{}".format('/'.join([camera_name, "filtered_cloud"]))
         }
     }
@@ -294,7 +294,7 @@ def launch_setup(context, *args, **kwargs):
     # Start the action server
     moveit_action_server = Node(
         name="moveit_action_server",
-        package="robotcontrol",
+        package="modproft_robot_control",
         executable="moveit_action_server",
         output="screen",
         parameters=[
@@ -314,7 +314,7 @@ def launch_setup(context, *args, **kwargs):
         mongodb_server_node,
         rviz_node,
         static_tf,
-        #moveit_action_server,
+        moveit_action_server,
     ]
     return nodes_to_start
 
