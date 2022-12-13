@@ -11,7 +11,7 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     ur_bringup = os.path.join(
-        get_package_share_directory('modproft_ur_bringup'), 'launch', 'sim_control.launch.py')
+        get_package_share_directory('modproft_ur_bringup'), 'launch', 'ur_control.launch.py')
 
     moveit_config = os.path.join(
         get_package_share_directory('modproft_ur_bringup'), 'launch', 'ur_moveit.launch.py')
