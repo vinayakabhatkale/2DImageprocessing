@@ -1,0 +1,42 @@
+[3.287s] Invoking command in '/root/ModProFT/src/modproft_ur_bringup': PYTHONPATH=/root/ModProFT/src/install/modproft_ur_bringup/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/modproft_ur_bringup build --build-base /root/ModProFT/src/build/modproft_ur_bringup/build install --prefix /root/ModProFT/src/install/modproft_ur_bringup --record /root/ModProFT/src/build/modproft_ur_bringup/install.log --single-version-externally-managed
+[4.581s] running egg_info
+[4.581s] creating ../build/modproft_ur_bringup/modproft_ur_bringup.egg-info
+[4.581s] writing ../build/modproft_ur_bringup/modproft_ur_bringup.egg-info/PKG-INFO
+[4.581s] writing dependency_links to ../build/modproft_ur_bringup/modproft_ur_bringup.egg-info/dependency_links.txt
+[4.581s] writing requirements to ../build/modproft_ur_bringup/modproft_ur_bringup.egg-info/requires.txt
+[4.581s] writing top-level names to ../build/modproft_ur_bringup/modproft_ur_bringup.egg-info/top_level.txt
+[4.581s] writing manifest file '../build/modproft_ur_bringup/modproft_ur_bringup.egg-info/SOURCES.txt'
+[4.581s] reading manifest file '../build/modproft_ur_bringup/modproft_ur_bringup.egg-info/SOURCES.txt'
+[4.582s] writing manifest file '../build/modproft_ur_bringup/modproft_ur_bringup.egg-info/SOURCES.txt'
+[4.582s] running build
+[4.582s] running build_py
+[4.582s] creating /root/ModProFT/src/build/modproft_ur_bringup/build
+[4.582s] creating /root/ModProFT/src/build/modproft_ur_bringup/build/lib
+[4.582s] creating /root/ModProFT/src/build/modproft_ur_bringup/build/lib/modproft_ur_bringup
+[4.582s] copying modproft_ur_bringup/__init__.py -> /root/ModProFT/src/build/modproft_ur_bringup/build/lib/modproft_ur_bringup
+[4.582s] running install
+[4.582s] running install_lib
+[4.582s] creating /root/ModProFT/src/install/modproft_ur_bringup/lib/python3.8/site-packages/modproft_ur_bringup
+[4.582s] copying /root/ModProFT/src/build/modproft_ur_bringup/build/lib/modproft_ur_bringup/__init__.py -> /root/ModProFT/src/install/modproft_ur_bringup/lib/python3.8/site-packages/modproft_ur_bringup
+[4.582s] byte-compiling /root/ModProFT/src/install/modproft_ur_bringup/lib/python3.8/site-packages/modproft_ur_bringup/__init__.py to __init__.cpython-38.pyc
+[4.582s] running install_data
+[4.583s] creating /root/ModProFT/src/install/modproft_ur_bringup/share/ament_index
+[4.583s] creating /root/ModProFT/src/install/modproft_ur_bringup/share/ament_index/resource_index
+[4.583s] creating /root/ModProFT/src/install/modproft_ur_bringup/share/ament_index/resource_index/packages
+[4.583s] copying resource/modproft_ur_bringup -> /root/ModProFT/src/install/modproft_ur_bringup/share/ament_index/resource_index/packages
+[4.586s] copying package.xml -> /root/ModProFT/src/install/modproft_ur_bringup/share/modproft_ur_bringup
+[4.586s] creating /root/ModProFT/src/install/modproft_ur_bringup/share/modproft_ur_bringup/launch
+[4.586s] copying launch/ur_moveit.launch.py -> /root/ModProFT/src/install/modproft_ur_bringup/share/modproft_ur_bringup/launch
+[4.586s] copying launch/sim_bringup.launch.py -> /root/ModProFT/src/install/modproft_ur_bringup/share/modproft_ur_bringup/launch
+[4.586s] copying launch/ur_control.launch.py -> /root/ModProFT/src/install/modproft_ur_bringup/share/modproft_ur_bringup/launch
+[4.586s] copying launch/ur_bringup.launch.py -> /root/ModProFT/src/install/modproft_ur_bringup/share/modproft_ur_bringup/launch
+[4.586s] copying launch/sim_control.launch.py -> /root/ModProFT/src/install/modproft_ur_bringup/share/modproft_ur_bringup/launch
+[4.586s] creating /root/ModProFT/src/install/modproft_ur_bringup/share/modproft_ur_bringup/config
+[4.586s] copying config/ur_controllers.yaml -> /root/ModProFT/src/install/modproft_ur_bringup/share/modproft_ur_bringup/config
+[4.586s] running install_egg_info
+[4.586s] Copying ../build/modproft_ur_bringup/modproft_ur_bringup.egg-info to /root/ModProFT/src/install/modproft_ur_bringup/lib/python3.8/site-packages/modproft_ur_bringup-0.0.0-py3.8.egg-info
+[4.586s] running install_scripts
+[4.586s] writing list of installed files to '/root/ModProFT/src/build/modproft_ur_bringup/install.log'
+[4.609s] /usr/local/lib/python3.8/dist-packages/setuptools/command/install.py:34: SetuptoolsDeprecationWarning: setup.py install is deprecated. Use build and pip and other standards-based tools.
+[4.610s]   warnings.warn(
+[4.684s] Invoked command in '/root/ModProFT/src/modproft_ur_bringup' returned '0': PYTHONPATH=/root/ModProFT/src/install/modproft_ur_bringup/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../build/modproft_ur_bringup build --build-base /root/ModProFT/src/build/modproft_ur_bringup/build install --prefix /root/ModProFT/src/install/modproft_ur_bringup --record /root/ModProFT/src/build/modproft_ur_bringup/install.log --single-version-externally-managed

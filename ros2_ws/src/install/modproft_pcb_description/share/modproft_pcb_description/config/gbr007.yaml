@@ -1,0 +1,27 @@
+inertial:
+  origin:
+    rpy: "0 0 0"
+    xyz: "0.020494210881512057 0.011720080784979617 0.00855570942828954"
+  mass: "1.1142774639374997"
+  inertia:
+    ixx: 0.001781
+    ixy: 0.000205
+    ixz: -0.000103
+    iyy: 0.001952
+    iyz: -3.2e-5
+    izz: 0.003618
+visual:
+  origin:
+    rpy: "0 0 0"
+    xyz: "0 0 0"
+  geometry:
+    mesh: "gbr007/base_link.stl"
+    scale: "0.001 0.001 0.001"
+  material: "silver"
+collision:
+  origin:
+    rpy: "0 0 0"
+    xyz: "0 0 0"
+  geometry:
+    mesh: "gbr007/base_link.stl"
+    scale: "0.001 0.001 0.001"

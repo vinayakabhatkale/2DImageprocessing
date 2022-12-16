@@ -1,0 +1,4 @@
+source;share/modproft_pcb_description/local_setup.bash
+source;share/modproft_pcb_description/local_setup.dsv
+source;share/modproft_pcb_description/local_setup.sh
+source;share/modproft_pcb_description/local_setup.zsh
