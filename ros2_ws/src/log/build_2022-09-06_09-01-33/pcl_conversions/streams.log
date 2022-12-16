@@ -1,0 +1,94 @@
+[0.036s] Invoking command in '/root/ModProFT/src/build/pcl_conversions': AMENT_PREFIX_PATH=/root/ModProFT/src/install/pcl_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/root/ModProFT/src/install/pcl_msgs:/root/ModProFT/install/robotcontrol:/root/ModProFT/install/rcontrol_msgs:/root/ModProFT/install/perception_pcl:/root/ModProFT/install/pcl_ros:/root/ModProFT/install/octomap_server2:/root/ModProFT/install/pcl_conversions:/root/ModProFT/install/pcl_msgs:/root/ModProFT/install/octomap_msgs:/root/ModProFT/install/modproft_pcb_description:/root/ModProFT/install/modproft_adapter_description:/root/ur_driver/install/ur_robot_driver:/root/ur_driver/install/ur_bringup:/root/ur_driver/install/ur_moveit_config:/root/ur_driver/install/ur_description:/root/ur_driver/install/ur_controllers:/root/ur_driver/install/ur_dashboard_msgs:/root/ModProFT/install/modproft_ur_moveit_config:/root/ModProFT/install/modproft_ur_bringup:/root/ModProFT/install/modproft_bringup:/opt/ros/foxy LD_LIBRARY_PATH=/root/ModProFT/src/install/pcl_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/root/ModProFT/src/install/pcl_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /root/ModProFT/src/perception_pcl/pcl_conversions -DCMAKE_INSTALL_PREFIX=/root/ModProFT/src/install/pcl_conversions
+[0.143s] -- The C compiler identification is GNU 9.4.0
+[0.298s] -- The CXX compiler identification is GNU 9.4.0
+[0.317s] -- Check for working C compiler: /usr/bin/cc
+[0.472s] -- Check for working C compiler: /usr/bin/cc -- works
+[0.472s] -- Detecting C compiler ABI info
+[0.655s] -- Detecting C compiler ABI info - done
+[0.689s] -- Detecting C compile features
+[0.689s] -- Detecting C compile features - done
+[0.695s] -- Check for working CXX compiler: /usr/bin/c++
+[0.889s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[0.891s] -- Detecting CXX compiler ABI info
+[1.206s] -- Detecting CXX compiler ABI info - done
+[1.245s] -- Detecting CXX compile features
+[1.245s] -- Detecting CXX compile features - done
+[1.254s] -- Found ament_cmake: 0.9.9 (/opt/ros/foxy/share/ament_cmake/cmake)
+[1.335s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+[1.335s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[2.040s] -- Found Boost: /usr/lib/x86_64-linux-gnu/cmake/Boost-1.71.0/BoostConfig.cmake (found version "1.71.0")  
+[2.068s] -- Found message_filters: 3.2.5 (/opt/ros/foxy/share/message_filters/cmake)
+[2.108s] -- Checking for module 'eigen3'
+[2.147s] --   Found eigen3, version 3.3.7
+[2.231s] -- Found Eigen: /usr/include/eigen3 (Required is at least version "3.1") 
+[2.231s] -- Eigen found (include: /usr/include/eigen3, version: 3.3.7)
+[2.363s] -- Checking for module 'libusb-1.0'
+[2.404s] --   Found libusb-1.0, version 1.0.23
+[2.519s] -- Found USB_10: /usr/lib/x86_64-linux-gnu/libusb-1.0.so  
+[2.677s] -- OpenNI found (include: /usr/include/ni, lib: /usr/lib/libOpenNI.so)
+[2.859s] -- OpenNI2 found (include: /usr/include/openni2, lib: /usr/lib/libOpenNI2.so)
+[3.027s] -- The imported target "vtkParseOGLExt" references the file
+[3.027s]    "/usr/bin/vtkParseOGLExt-7.1"
+[3.027s] but this file does not exist.  Possible reasons include:
+[3.028s] * The file was deleted, renamed, or moved to another location.
+[3.028s] * An install or uninstall procedure did not complete successfully.
+[3.028s] * The installation package was faulty and contained
+[3.028s]    "/usr/lib/cmake/vtk-7.1/VTKTargets.cmake"
+[3.028s] but not all the files it references.
+[3.028s] 
+[3.030s] -- The imported target "vtkRenderingPythonTkWidgets" references the file
+[3.030s]    "/usr/lib/x86_64-linux-gnu/libvtkRenderingPythonTkWidgets.so"
+[3.030s] but this file does not exist.  Possible reasons include:
+[3.031s] * The file was deleted, renamed, or moved to another location.
+[3.031s] * An install or uninstall procedure did not complete successfully.
+[3.031s] * The installation package was faulty and contained
+[3.031s]    "/usr/lib/cmake/vtk-7.1/VTKTargets.cmake"
+[3.031s] but not all the files it references.
+[3.031s] 
+[3.032s] -- The imported target "vtk" references the file
+[3.032s]    "/usr/bin/vtk"
+[3.033s] but this file does not exist.  Possible reasons include:
+[3.033s] * The file was deleted, renamed, or moved to another location.
+[3.033s] * An install or uninstall procedure did not complete successfully.
+[3.033s] * The installation package was faulty and contained
+[3.033s]    "/usr/lib/cmake/vtk-7.1/VTKTargets.cmake"
+[3.033s] but not all the files it references.
+[3.034s] 
+[3.034s] -- The imported target "pvtk" references the file
+[3.034s]    "/usr/bin/pvtk"
+[3.034s] but this file does not exist.  Possible reasons include:
+[3.034s] * The file was deleted, renamed, or moved to another location.
+[3.034s] * An install or uninstall procedure did not complete successfully.
+[3.034s] * The installation package was faulty and contained
+[3.034s]    "/usr/lib/cmake/vtk-7.1/VTKTargets.cmake"
+[3.035s] but not all the files it references.
+[3.035s] 
+[3.093s] -- Found libusb-1.0: /usr/include  
+[3.097s] -- Found PCL_COMMON: /usr/lib/x86_64-linux-gnu/libpcl_common.so  
+[3.100s] -- Found PCL_OCTREE: /usr/lib/x86_64-linux-gnu/libpcl_octree.so  
+[3.103s] -- Found PCL_IO: /usr/lib/x86_64-linux-gnu/libpcl_io.so  
+[3.107s] -- Found pcl_msgs: 1.0.0 (/root/ModProFT/src/install/pcl_msgs/share/pcl_msgs/cmake)
+[3.213s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[3.245s] -- Found rosidl_adapter: 1.2.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[3.510s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[3.593s] -- Found FastRTPS: /opt/ros/foxy/include  
+[3.870s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[4.564s] -- Found rclcpp: 2.4.1 (/opt/ros/foxy/share/rclcpp/cmake)
+[4.685s] -- Found rmw_implementation_cmake: 1.0.3 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[4.688s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[4.689s] -- Looking for pthread.h
+[4.785s] -- Looking for pthread.h - found
+[4.785s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[4.881s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+[4.882s] -- Looking for pthread_create in pthreads
+[4.962s] -- Looking for pthread_create in pthreads - not found
+[4.962s] -- Looking for pthread_create in pthread
+[5.052s] -- Looking for pthread_create in pthread - found
+[5.053s] -- Found Threads: TRUE  
+[5.277s] -- Found ament_cmake_gtest: 0.9.9 (/opt/ros/foxy/share/ament_cmake_gtest/cmake)
+[5.283s] -- Found gtest sources under '/opt/ros/foxy/src/gtest_vendor': C++ tests using 'Google Test' will be built
+[5.288s] -- Check if compiler accepts -pthread
+[5.388s] -- Check if compiler accepts -pthread - yes
+[5.481s] -- Configuring done
+[5.516s] -- Generating done
+[5.519s] -- Build files have been written to: /root/ModProFT/src/build/pcl_conversions

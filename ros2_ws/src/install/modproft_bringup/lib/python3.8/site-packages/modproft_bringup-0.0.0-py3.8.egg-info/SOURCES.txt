@@ -1,0 +1,14 @@
+package.xml
+setup.cfg
+setup.py
+../build/modproft_bringup/modproft_bringup.egg-info/PKG-INFO
+../build/modproft_bringup/modproft_bringup.egg-info/SOURCES.txt
+../build/modproft_bringup/modproft_bringup.egg-info/dependency_links.txt
+../build/modproft_bringup/modproft_bringup.egg-info/requires.txt
+../build/modproft_bringup/modproft_bringup.egg-info/top_level.txt
+../build/modproft_bringup/modproft_bringup.egg-info/zip-safe
+modproft_bringup/__init__.py
+resource/modproft_bringup
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py

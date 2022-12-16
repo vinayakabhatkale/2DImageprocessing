@@ -35,7 +35,7 @@ camera:
   sensor:
     type: "depth"
     always_on: "false"
-    update_rate: 30.0
+    update_rate: 1.0
     name: "Canon_Powershot_G7_MKIII"
     horizontal_fov: 1.047198
     image:
