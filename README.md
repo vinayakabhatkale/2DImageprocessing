@@ -40,7 +40,7 @@ source install/setup.bash
 ### How to run the code as simulation
 After sourcing the workspace the simulation can be started.
 ```
-ros2 launch modproft_ur_bringup sim_bringup.launch.py 
+ros2 launch modproft_bringup sim_bringup.launch.py 
 ```
 
 ### How to run the code on a real robot
@@ -70,7 +70,7 @@ This project was developed with Universal Robots UR5e robot in mind, other Unive
 #### Running the code
 After sourcing the workspace the real robot can be controlled.
 ```
-ros2 launch modproft_ur_bringup real_ur_bringup.launch.py
+ros2 launch modproft_bringup real_ur_bringup.launch.py
 ```
 
 ## Developing for the code
