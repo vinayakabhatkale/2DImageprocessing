@@ -57,10 +57,10 @@
         <xacro:property name="cover_binder_collision_geometry_scale" value="${cover_binder['collision']['geometry']['scale']}" scope="parent"/>
 
         <!-- Joints -->
-        <!-- Cover -->
+        <!-- Adapter plate -->
         <xacro:property name="adapter_plate_joint_origin_rpy" value="${adapter_plate['joints']['box_joint']['origin']['rpy']}" scope="parent"/>
         <xacro:property name="adapter_plate_joint_origin_xyz" value="${adapter_plate['joints']['box_joint']['origin']['xyz']}" scope="parent"/>
-        <!-- Lever -->
+        <!-- Cover binder -->
         <xacro:property name="cover_binder_joint_origin_rpy" value="${cover_binder['joints']['cover_joint']['origin']['rpy']}" scope="parent"/>
         <xacro:property name="cover_binder_joint_origin_xyz" value="${cover_binder['joints']['cover_joint']['origin']['xyz']}" scope="parent"/>
 

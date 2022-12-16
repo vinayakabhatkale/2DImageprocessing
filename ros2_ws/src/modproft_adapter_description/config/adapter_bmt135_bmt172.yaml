@@ -1,19 +1,19 @@
 adapter_plate:
   inertial:
     origin:
-      rpy: "0 0 0"
-      xyz: "-0.502428 0.284 0.285367"
-    mass: "2.742074"
+      rpy: "0.0 0.0 0.0"
+      xyz: "0.051 -0.0 -0.05"
+    mass: "2.5"
     inertia:
-      ixx: "0.04095"
-      ixy: "-1.023732e-6"
-      ixz: "0.006486"
-      iyy: "0.02592"
-      iyz: "1.90736e-7"
-      izz: "0.06322"
+      ixx: "0.042015211"
+      ixy: "0.0"
+      ixz: "0.0"
+      iyy: "0.027312107"
+      iyz: "0.0"
+      izz: "0.069256229"
   visual:
     origin:
-      rpy: "0 0 0"
+      rpy: "0.0 0.0 0.0"
       xyz: "0.051 -0.0 -0.1"
     geometry:
       mesh: "adapter_bmt135_bmt172/visual/adapter_cover_bmt135_bmt172_visual.dae"
@@ -21,7 +21,7 @@ adapter_plate:
     material: "silver"
   collision:
     origin:
-      rpy: "0 0 0"
+      rpy: "0.0 0.0 0.0"
       xyz: "0.051 -0.0 -0.1"
     geometry:
       mesh: "adapter_bmt135_bmt172/collision/adapter_cover_bmt135_bmt172_collision.stl"
@@ -29,22 +29,22 @@ adapter_plate:
   joints:
     box_joint:
       origin:
-        rpy: "0 0 0"
+        rpy: "0.0 0.0 0.0"
         xyz: "-0.051 0.0 0.1"
 
 cover_binder:
   inertial:
     origin:
-      rpy: "0 0 0"
-      xyz: "-0.135 0.215 0.04"
-    mass: "2.00847"
+      rpy: "0.0 0.436332313 0.0"
+      xyz: "0.1 0.225 -0.1"
+    mass: "2.0"
     inertia:
-      ixx: "26.49227264e-3"
-      ixy: "-0.00242880525e-3"
-      ixz: "2.480113408e-3"
-      iyy: "9.677550592e-3"
-      iyz: "0.0029015125e-3"
-      izz: "34.690670592e-3"
+      ixx: "0.030996673"
+      ixy: "0.0"
+      ixz: "0.0"
+      iyy: "0.011564673"
+      iyz: "0.0"
+      izz: "0.042488333"
   visual:
     origin:
       rpy: "0.0 1.308996939 0.0"
@@ -63,5 +63,5 @@ cover_binder:
   joints:
     cover_joint:
       origin:
-        rpy: "0 0 0"
-        xyz: "-0.026 0.0385 0.0018"
+        rpy: "0.0 0.0 0.0"
+        xyz: "0.0 0.0 0.0"

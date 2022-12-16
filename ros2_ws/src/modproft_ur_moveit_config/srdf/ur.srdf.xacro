@@ -6,8 +6,15 @@
   <!-- parameters -->
   <xacro:arg name="prefix" default="" />
 
-  <xacro:include filename="$(find ur_moveit_config)/srdf/ur_macro.srdf.xacro"/>
+  <xacro:include filename="$(find modproft_ur_moveit_config)/srdf/ur_macro.srdf.xacro"/>
 
   <xacro:ur_srdf name="$(arg name)" prefix="$(arg prefix)"/>
+
+  <disable_collisions link1="$(arg prefix)robot_table_link" link2="$(arg prefix)base_link" reason="Never" />
+  <disable_collisions link1="$(arg prefix)robot_table_tabletop_link" link2="$(arg prefix)base_link" reason="Adjacent" />
+  <disable_collisions link1="$(arg prefix)robot_table_tabletop_link" link2="$(arg prefix)base_link_inertia" reason="Adjacent" />
+  
+  <disable_collisions link1="$(arg prefix)wrist_3_link" link2="$(arg prefix)Klinke_link" reason="Adjacent" />
+  
 
 </robot>

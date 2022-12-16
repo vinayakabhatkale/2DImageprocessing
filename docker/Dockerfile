@@ -175,12 +175,15 @@ RUN mkdir -p ~/Universal_Robots_ROS2_Driver/src/ur_description \
 	&& cd ~/Universal_Robots_ROS2_Driver/src/ \
 	&& cp -r ~/temp/Universal_Robots_ROS2_Description/src/* ./ur_description \
 	&& cp -r ~/temp/Universal_Robots_ROS2_Driver/src/* . \
+	&& rm ~/Universal_Robots_ROS2_Driver/src/ur_robot_driver/include/ur_robot_driver/hardware_interface.hpp \
+	&& rm ~/Universal_Robots_ROS2_Driver/src/ur_robot_driver/src/hardware_interface.cpp \
+	&& rm ~/Universal_Robots_ROS2_Driver/src/ur_robot_driver/resources/ros_control.urscript \
 	&& rm -rf ~/temp/
 	
 # Override some UR driver packages for hardware setup
-COPY --chown=${USER} ./ur_driver_override/include/ur_robot_driver/hardware_interface.hpp ~/Universal_Robots_ROS2_Driver/src/ur_robot_driver/include/ur_robot_driver/
-COPY --chown=${USER} ./ur_driver_override/src/hardware_interface.cpp ~/Universal_Robots_ROS2_Driver/src/ur_robot_driver/src/
-COPY --chown=${USER} ./ur_driver_override/resources/ros_control.urscript ~/Universal_Robots_ROS2_Driver/src/ur_robot_driver/resources/
+COPY --chown=${USER} ./ur_driver_override/include/ur_robot_driver/hardware_interface.hpp /home/developer/Universal_Robots_ROS2_Driver/src/ur_robot_driver/include/ur_robot_driver/
+COPY --chown=${USER} ./ur_driver_override/src/hardware_interface.cpp /home/developer/Universal_Robots_ROS2_Driver/src/ur_robot_driver/src/
+COPY --chown=${USER} ./ur_driver_override/resources/ros_control.urscript /home/developer/Universal_Robots_ROS2_Driver/src/ur_robot_driver/resources/
 
 # Build UR driver
 RUN cd ~/Universal_Robots_ROS2_Driver \
@@ -223,6 +226,8 @@ RUN mkdir -p /home/${USER}/.gazebo/models
 RUN ln -s /home/${USER}/ROS_Foxy_ModProFT/install/modproft_pcb_description/share/modproft_pcb_description/ /home/${USER}/.gazebo/models/modproft_pcb_description
 
 RUN ln -s /home/${USER}/ROS_Foxy_ModProFT/install/modproft_adapter_description/share/modproft_adapter_description/ /home/${USER}/.gazebo/models/modproft_adapter_description
+
+RUN ln -s /home/${USER}/ROS_Foxy_ModProFT/install/modproft_manipulator_description/share/modproft_manipulator_description/ /home/${USER}/.gazebo/models/modproft_manipulator_description
 
 RUN ln -s /home/${USER}/ROS_Foxy_ModProFT/install/modproft_camera_description/share/modproft_camera_description/ /home/${USER}/.gazebo/models/modproft_camera_description
 

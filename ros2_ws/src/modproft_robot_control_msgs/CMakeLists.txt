@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(modproft_camera_description)
+project(modproft_robot_control_msgs)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -17,16 +17,13 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(ament_cmake_python REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(rclpy REQUIRED)
 
-# Sources install
-install(
-        DIRECTORY
-        config meshes urdf launch
-        DESTINATION
-        share/${PROJECT_NAME}
+find_package(rosidl_default_generators REQUIRED)
+rosidl_generate_interfaces(${PROJECT_NAME}
+"action/MoveCartesian.action"
+"action/MoveJoint.action"
+"action/MovePose.action"
+"action/MoveTCP.action"
 )
 
 if(BUILD_TESTING)

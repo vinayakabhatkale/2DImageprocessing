@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(modproft_camera_description)
+project(modproft_table_description)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -21,7 +21,6 @@ find_package(ament_cmake_python REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclpy REQUIRED)
 
-# Sources install
 install(
         DIRECTORY
         config meshes urdf launch

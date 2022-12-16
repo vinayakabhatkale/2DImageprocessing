@@ -24,7 +24,7 @@ find_package(ament_cmake REQUIRED)
 # Sources install
 install(
         DIRECTORY
-        urdf
+        config urdf
         DESTINATION
         share/${PROJECT_NAME}
 )

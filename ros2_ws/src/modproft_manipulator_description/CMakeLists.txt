@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(modproft_camera_description)
+project(modproft_manipulator_description)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -24,7 +24,7 @@ find_package(rclpy REQUIRED)
 # Sources install
 install(
         DIRECTORY
-        config meshes urdf launch
+        config meshes urdf
         DESTINATION
         share/${PROJECT_NAME}
 )
