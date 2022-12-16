@@ -9,12 +9,11 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 def generate_launch_description():
     ld = LaunchDescription()
 
-
     ur_bringup = os.path.join(
-        get_package_share_directory('modproft_ur_bringup'), 'launch', 'real_ur_control.launch.py')
+        get_package_share_directory('modproft_ur_bringup'), 'launch', 'ur_control.launch.py')
 
     moveit_config = os.path.join(
-        get_package_share_directory('ur_bringup'), 'launch', 'ur_moveit.launch.py')
+        get_package_share_directory('modproft_ur_moveit_config'), 'launch', 'ur_moveit.launch.py')
 
 
     ur_bringup = IncludeLaunchDescription(PythonLaunchDescriptionSource(ur_bringup),
@@ -22,7 +21,8 @@ def generate_launch_description():
                                       "robot_ip":"192.168.1.20",
                                       "use_fake_hardware":"false",
                                       "launch_rviz":"false",
-                                      "controllers_file":"real_ur_controllers.yaml"
+                                      "controllers_file":"ur_controllers.yaml",
+                                      "is_sim": "false"
                                      }.items())
 
     moveit_config = IncludeLaunchDescription(PythonLaunchDescriptionSource(moveit_config),

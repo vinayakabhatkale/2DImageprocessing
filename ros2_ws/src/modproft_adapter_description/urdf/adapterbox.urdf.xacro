@@ -49,6 +49,14 @@
             </geometry>
         </collision>
     </link>
+    <gazebo reference="${box_name}">
+        <kp>100000000.0</kp>
+        <kd>1.0</kd>
+        <mu1>0.8</mu1>
+        <mu2>0.8</mu2>
+        <maxVel>0.1</maxVel>
+        <minDepth>0.0001</minDepth>
+    </gazebo>
 
     <link name="cover_frame_${box_name}">
         <inertial>
@@ -234,10 +242,8 @@
         <visual>
             <origin rpy="${adapter_plate_visual_origin_rpy}" xyz="${adapter_plate_visual_origin_xyz}"/>
             <geometry>
-                <!--mesh filename="package://${package_name}/meshes/${adapter_plate_visual_geometry_mesh}"
-                      scale="${adapter_plate_visual_geometry_scale}"/-->
-                <mesh filename="package://${package_name}/meshes/${adapter_plate_collision_geometry_mesh}"
-                      scale="${adapter_plate_collision_geometry_scale}"/>
+                <mesh filename="package://${package_name}/meshes/${adapter_plate_visual_geometry_mesh}"
+                      scale="${adapter_plate_visual_geometry_scale}"/>
             </geometry>
             <material name="${adapter_plate_visual_material}"/>
         </visual>
@@ -306,8 +312,10 @@
         <dynamics damping="0.03" friction="0.1"/>
     </joint>
     <gazebo reference="boxlever_joint_${box_name}">
-        <implicitSpringDamper>True</implicitSpringDamper>
-        <dampingFactor>0.1</dampingFactor>
+        <!--implicitSpringDamper>True</implicitSpringDamper-->
+        <dampingFactor>1.0</dampingFactor>
+        <springStiffness>0.05</springStiffness>
+        <springReference>0.1</springReference>
     </gazebo>
 
     <joint name="boxcylinder_left_joint_${box_name}" type="revolute">
@@ -400,8 +408,10 @@
                     <velocity>${cylinder_left_joint_limit_velocity}</velocity>
                 </limit>
                 <dynamics>
-                    <damping>0.03</damping>
-                    <friction>0.01</friction>
+                    <damping>120.0</damping>
+                    <friction>0.1</friction>
+                    <spring_reference>0.1</spring_reference>
+                    <spring_stiffness>1250</spring_stiffness>
                 </dynamics>
             </axis>
         </joint>
@@ -418,8 +428,10 @@
                     <velocity>${cylinder_right_joint_limit_velocity}</velocity>
                 </limit>
                 <dynamics>
-                    <damping>0.03</damping>
-                    <friction>0.01</friction>
+                    <damping>120.0</damping>
+                    <friction>0.1</friction>
+                    <spring_reference>0.1</spring_reference>
+                    <spring_stiffness>1250</spring_stiffness>
                 </dynamics>
             </axis>
         </joint>

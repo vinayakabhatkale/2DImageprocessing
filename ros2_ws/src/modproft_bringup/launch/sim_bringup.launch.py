@@ -11,10 +11,10 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     ur_bringup = os.path.join(
-        get_package_share_directory('modproft_ur_bringup'), 'launch', 'sim_control.launch.py')
+        get_package_share_directory('modproft_ur_bringup'), 'launch', 'control.launch.py')
 
     moveit_config = os.path.join(
-        get_package_share_directory('modproft_ur_bringup'), 'launch', 'ur_moveit.launch.py')
+        get_package_share_directory('modproft_ur_moveit_config'), 'launch', 'ur_moveit.launch.py')
 
     adapter_bringup = os.path.join(
         get_package_share_directory('modproft_adapter_description'), 'launch', 'spawn_adapter.launch.py')
@@ -27,11 +27,11 @@ def generate_launch_description():
 
     ur_bringup = IncludeLaunchDescription(PythonLaunchDescriptionSource(ur_bringup),
                                           launch_arguments={"ur_type": "ur5e",
-                                                            "robot_ip": "yyy.yyy.yyy.yyy",
+                                                            "robot_ip": "x.x.x.x",
                                                             "use_fake_hardware": "true",
                                                             "launch_rviz": "false",
-                                                            "controllers_file": "sim_ur_controllers.yaml",
-                                                            "use_sim_time": "true"
+                                                            "controllers_file": "ur_controllers.yaml",
+                                                            "is_sim": "true"
                                                             }.items())
 
     moveit_config = IncludeLaunchDescription(PythonLaunchDescriptionSource(moveit_config),
@@ -44,11 +44,12 @@ def generate_launch_description():
 
     adapter_bringup = IncludeLaunchDescription(PythonLaunchDescriptionSource(adapter_bringup),
                                                launch_arguments={"package_name": "modproft_adapter_description",
-                                                                 "position": "-750.0 0.0 200.0"
+                                                                 "position": "-750.0 0.0 201.0"
                                                                  }.items())
     adapter_table_bringup = IncludeLaunchDescription(PythonLaunchDescriptionSource(table_bringup),
                                                      launch_arguments={"package_name": "modproft_table_description",
-                                                     "position": "-750.0 0.0 0.0",
+                                                                       "table_type": "adapter_table",
+                                                                       "position": "-1000.0 250.0 0.0",
                                                                        "table_name": "adapter_table"
                                                                        }.items())
 
@@ -60,7 +61,7 @@ def generate_launch_description():
     ld.add_action(ur_bringup)
     ld.add_action(moveit_config)
     ld.add_action(adapter_bringup)
-    ld.add_action(pcb_bringup)
+    #ld.add_action(pcb_bringup)
     ld.add_action(adapter_table_bringup)
 
     return ld

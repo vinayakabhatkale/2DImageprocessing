@@ -1,71 +1,87 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://wiki.ros.org/xacro">
 
-   <xacro:macro name="generate_table" params="prefix attachment_link table_name package_name:=modproft_table_description table_type:=box">
-  
-    <xacro:include filename="$(find ${package_name})/urdf/inc/table_common.xacro"/>
+  <xacro:macro name="generate_table" params="prefix attachment_link table_name package_name:=modproft_table_description table_type:=box">
+
+    <xacro:include filename="$(find ${package_name})/urdf/inc/table_common.xacro" />
     <!-- Uncomment for in-package colors -->
     <!--<xacro:include filename="$(find ${package_name})/urdf/inc/materials.xacro"/>-->
 
-    <xacro:read_table_data model_parameter_file="$(find ${package_name})/config/${table_type}.yaml"/>
+    <xacro:read_table_data model_parameter_file="$(find ${package_name})/config/${table_type}.yaml" />
 
-    <xacro:property name="prefix_default" value=""/>
-    <xacro:property name="mesh_default" value=""/>
+    <xacro:property name="prefix_default" value="" />
+    <xacro:property name="mesh_default" value="" />
 
     <xacro:if value="${prefix != prefix_default}">
-      <xacro:property name="table_reference" value="${prefix}${table_name}"/>
+      <xacro:property name="table_reference" value="${prefix}${table_name}" />
     </xacro:if>
     <xacro:if value="${prefix == prefix_default}">
-      <xacro:property name="table_reference" value="${table_name}"/>
+      <xacro:property name="table_reference" value="${table_name}" />
     </xacro:if>
 
     <!-- Links -->
     <link name="${table_reference}_link">
       <visual>
-        <origin rpy="${table_visual_origin_rpy}" xyz="${table_visual_origin_xyz}"/>
+        <origin rpy="${table_visual_origin_rpy}" xyz="${table_visual_origin_xyz}" />
         <geometry>
           <xacro:if value="${table_visual_geometry_mesh != mesh_default}">
-            <mesh filename="package://${package_name}/meshes/${table_visual_geometry_mesh}" scale="${table_visual_geometry_scale}"/>
+            <mesh filename="package://${package_name}/meshes/${table_visual_geometry_mesh}" scale="${table_visual_geometry_scale}" />
           </xacro:if>
           <xacro:if value="${table_visual_geometry_mesh == mesh_default}">
-            <box size="${table_visual_geometry_scale}"/>
+            <box size="${table_visual_geometry_scale}" />
           </xacro:if>
         </geometry>
       </visual>
       <collision>
-        <origin rpy="${table_collision_origin_rpy}" xyz="${table_collision_origin_xyz}"/>
+        <origin rpy="${table_collision_origin_rpy}" xyz="${table_collision_origin_xyz}" />
         <geometry>
           <xacro:if value="${table_collision_geometry_mesh != mesh_default}">
-            <mesh filename="package://${package_name}/meshes/${table_collision_geometry_mesh}" scale="${table_collision_geometry_scale}"/>
+            <mesh filename="package://${package_name}/meshes/${table_collision_geometry_mesh}" scale="${table_collision_geometry_scale}" />
           </xacro:if>
           <xacro:if value="${table_collision_geometry_mesh == mesh_default}">
-            <box size="${table_collision_geometry_scale}"/>
+            <box size="${table_collision_geometry_scale}" />
           </xacro:if>
         </geometry>
         <!-- Uncomment for in-package colors -->
         <!-- material name="${table_visual_material}"/-->
-        <xacro:material_silver/>
+        <xacro:material_silver />
       </collision>
       <inertial>
-        <mass value="${table_inertial_mass}"/>
-        <origin rpy="${table_inertial_origin_rpy}" xyz="${table_inertial_origin_xyz}"/>
-        <inertia ixx="${table_inertial_inertia_ixx}" ixy="${table_inertial_inertia_ixy}" ixz="${table_inertial_inertia_ixz}" iyy="${table_inertial_inertia_iyy}" iyz="${table_inertial_inertia_iyz}" izz="${table_inertial_inertia_izz}"/>
+        <mass value="${table_inertial_mass}" />
+        <origin rpy="${table_inertial_origin_rpy}" xyz="${table_inertial_origin_xyz}" />
+        <inertia ixx="${table_inertial_inertia_ixx}" ixy="${table_inertial_inertia_ixy}" ixz="${table_inertial_inertia_ixz}" iyy="${table_inertial_inertia_iyy}" iyz="${table_inertial_inertia_iyz}" izz="${table_inertial_inertia_izz}" />
       </inertial>
     </link>
+    <gazebo reference="${table_reference}_link">
+      <kp>100000000.0</kp>
+      <kd>1.0</kd>
+      <mu1>0.8</mu1>
+      <mu2>0.8</mu2>
+      <maxVel>0.1</maxVel>
+      <minDepth>0.0001</minDepth>
+    </gazebo>
 
-    <link name="${table_reference}_tabletop_link"/>
-  
+    <link name="${table_reference}_tabletop_link" />
+    <gazebo reference="${table_reference}_tabletop_link">
+      <kp>100000000.0</kp>
+      <kd>0.0001</kd>
+      <mu1>0.8</mu1>
+      <mu2>0.8</mu2>
+      <maxVel>0.1</maxVel>
+      <minDepth>0.0001</minDepth>
+    </gazebo>
+
     <!-- Joints -->
     <joint type="fixed" name="${prefix}${attachment_link}_${table_name}_joint">
-      <origin rpy="${tableattachment_joint_origin_rpy}" xyz="${tableattachment_joint_origin_xyz}"/>
-      <child link="${table_reference}_link"/>
-      <parent link="${prefix}${attachment_link}"/>
+      <origin rpy="${tableattachment_joint_origin_rpy}" xyz="${tableattachment_joint_origin_xyz}" />
+      <child link="${table_reference}_link" />
+      <parent link="${prefix}${attachment_link}" />
     </joint>
 
     <joint type="fixed" name="${prefix}${table_name}_virtualtabletop_joint">
-      <origin rpy="${tabletop_joint_origin_rpy}" xyz="${tabletop_joint_origin_xyz}"/>
-      <child link="${table_reference}_tabletop_link"/>
-      <parent link="${table_reference}_link"/>
+      <origin rpy="${tabletop_joint_origin_rpy}" xyz="${tabletop_joint_origin_xyz}" />
+      <child link="${table_reference}_tabletop_link" />
+      <parent link="${table_reference}_link" />
     </joint>
 
   </xacro:macro>
