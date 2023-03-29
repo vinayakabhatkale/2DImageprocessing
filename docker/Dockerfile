@@ -25,9 +25,11 @@ RUN apt-get update \
        	curl \
        	git \
        	gnupg2 \
+       	libopencv-dev \
        	libyaml-cpp-dev \
        	lsb-release \
        	nano \
+       	python3-opencv \
        	unzip \
        	usbutils \
        	software-properties-common \
@@ -108,26 +110,11 @@ RUN apt-get update \
 		${PYTHON}-colcon-mixin \
 		${PYTHON}-rosdep \
 		${PYTHON}-vcstool \
-		ros-${ROS2_DISTRO}-gazebo* \
-		ros-${ROS2_DISTRO}-gazebo-ros2-control \
-		ros-${ROS2_DISTRO}-hls-lfcd-lds-driver \
-		ros-${ROS2_DISTRO}-joint-state-publisher \
-		ros-${ROS2_DISTRO}-joint-state-publisher-gui \
-		ros-${ROS2_DISTRO}-moveit \
-		ros-${ROS2_DISTRO}-moveit-common \
-		ros-${ROS2_DISTRO}-moveit-servo \
-		ros-${ROS2_DISTRO}-moveit-ros-perception \
-		ros-${ROS2_DISTRO}-pcl-conversions \
+		${PYTHON}-opencv \
 		ros-${ROS2_DISTRO}-rosbag2 \
-		ros-${ROS2_DISTRO}-ros2-control \
-		ros-${ROS2_DISTRO}-ros2-controllers \
 		ros-${ROS2_DISTRO}-rqt \
 		ros-${ROS2_DISTRO}-rviz2 \
-		ros-${ROS2_DISTRO}-tf2-tools \
-		ros-${ROS2_DISTRO}-tf-transformations \
-		ros-${ROS2_DISTRO}-ur-client-library \
-		ros-${ROS2_DISTRO}-ur-msgs \
-		ros-${ROS2_DISTRO}-warehouse-ros-mongo \
+		ros-${ROS2_DISTRO}-cv-bridge \
 	&& rm -rf /var/lib/apt/lists/*
 	
 # Setup colcon mixin and metadata
@@ -147,89 +134,17 @@ RUN rosdep update --rosdistro $ROS2_DISTRO
 # Setup ROS for container console
 RUN echo "\n#ROS Foxy Setup\nsource /opt/ros/foxy/setup.bash" >> ~/.bashrc
 
-#########################
-##      UR Setup       ##
-#########################
-
-# UR driver temporary directory
-RUN mkdir -p ~/temp/Universal_Robots_ROS2_Driver/src/ \
-	&& git clone -b foxy --depth 1 https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git ~/temp/Universal_Robots_ROS2_Driver/src/ \
-	&& cd ~/temp/Universal_Robots_ROS2_Driver/src/ \
-	&& git fetch --all --tags \
-	&& git checkout tags/2.0.1 \
-	&& rm -rf ur_description
-	
-	#&& git checkout -b 01cd1ee47e1913a04557718e23034521caefeaa4 \
-
-RUN mkdir -p ~/temp/Universal_Robots_ROS2_Description/src/ \ 
-	&& git clone -b ros2 --depth 1  https://github.com/UniversalRobots/Universal_Robots_ROS2_Description.git ~/temp/Universal_Robots_ROS2_Description/src/ \
-	&& cd ~/temp/Universal_Robots_ROS2_Description/src/ \
-	&& git fetch --all --tags \
-	&& git checkout tags/2.0.0
-	
-	#&& git reset --hard c4d1724ac32a4f0e3bcfbcfa420f82608b07b17f
-	#&& git checkout -b c4d1724ac32a4f0e3bcfbcfa420f82608b07b17f
-
-# UR driver directory
-RUN mkdir -p ~/Universal_Robots_ROS2_Driver/src/ur_description \
-	&& cd ~/Universal_Robots_ROS2_Driver/src/ \
-	&& cp -r ~/temp/Universal_Robots_ROS2_Description/src/* ./ur_description \
-	&& cp -r ~/temp/Universal_Robots_ROS2_Driver/src/* . \
-	&& rm ~/Universal_Robots_ROS2_Driver/src/ur_robot_driver/include/ur_robot_driver/hardware_interface.hpp \
-	&& rm ~/Universal_Robots_ROS2_Driver/src/ur_robot_driver/src/hardware_interface.cpp \
-	&& rm ~/Universal_Robots_ROS2_Driver/src/ur_robot_driver/resources/ros_control.urscript \
-	&& rm -rf ~/temp/
-	
-# Override some UR driver packages for hardware setup
-COPY --chown=${USER} ./ur_driver_override/include/ur_robot_driver/hardware_interface.hpp /home/developer/Universal_Robots_ROS2_Driver/src/ur_robot_driver/include/ur_robot_driver/
-COPY --chown=${USER} ./ur_driver_override/src/hardware_interface.cpp /home/developer/Universal_Robots_ROS2_Driver/src/ur_robot_driver/src/
-COPY --chown=${USER} ./ur_driver_override/resources/ros_control.urscript /home/developer/Universal_Robots_ROS2_Driver/src/ur_robot_driver/resources/
-
-# Build UR driver
-RUN cd ~/Universal_Robots_ROS2_Driver \
-	&& . /opt/ros/$ROS2_DISTRO/setup.sh \
-	&& rosdep install --ignore-src --from-paths src --rosdistro $ROS2_DISTRO -y -r \
-	&& colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release \
-	&& echo "\n#UR Driver Setup\nsource ~/Universal_Robots_ROS2_Driver/install/setup.bash" >> ~/.bashrc
 	
 #########################
 ##      ModProFT       ##
 #########################
-WORKDIR /home/${USER}
-COPY --chown=${USER} ./ROS_Foxy_Utility_Code ./ROS_Foxy_Utility_Code
-
-RUN cd ~/ROS_Foxy_Utility_Code \
-	&& . /opt/ros/$ROS2_DISTRO/setup.sh \
-	&& rosdep install --ignore-src --from-paths src -y -r \
-	&& colcon build \
-	&& echo "\n#ModProFT Setup\nsource ~/ROS_Foxy_Utility_Code/install/setup.bash" >> ~/.bashrc
-
-RUN mkdir -p ~/ROS_Foxy_ModProFT/src \
-	&& cd ~/ROS_Foxy_ModProFT 
-#	&& . /opt/ros/$ROS2_DISTRO/setup.sh \
-#	&& rosdep install --ignore-src --from-paths src -y -r \
-#	&& colcon build \
-#	&& echo "\n#ModProFT Setup\nsource ~/ROS_Foxy_ModProFT/install/setup.bash" >> /root/.bashrc
+RUN mkdir -p /home/${USER}/ROS_Foxy_ModProFT/src/
 
 
 # !Command is run as root!
 USER root
 RUN chown -R ${USER}:${USER} /home/${USER}
 USER $USER
-
-#########################
-##    Model paths      ##
-#########################
-# symlink to Models
-RUN mkdir -p /home/${USER}/.gazebo/models
-#RUN ln -s /home/${USER}/Universal_Robots_ROS2_Driver/install/ur_description/share/#ur_description/ /home/${USER}/.gazebo/models/ur_description
-RUN ln -s /home/${USER}/ROS_Foxy_ModProFT/install/modproft_pcb_description/share/modproft_pcb_description/ /home/${USER}/.gazebo/models/modproft_pcb_description
-
-RUN ln -s /home/${USER}/ROS_Foxy_ModProFT/install/modproft_adapter_description/share/modproft_adapter_description/ /home/${USER}/.gazebo/models/modproft_adapter_description
-
-RUN ln -s /home/${USER}/ROS_Foxy_ModProFT/install/modproft_manipulator_description/share/modproft_manipulator_description/ /home/${USER}/.gazebo/models/modproft_manipulator_description
-
-RUN ln -s /home/${USER}/ROS_Foxy_ModProFT/install/modproft_camera_description/share/modproft_camera_description/ /home/${USER}/.gazebo/models/modproft_camera_description
 
 WORKDIR /home/${USER}/
 
