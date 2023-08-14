@@ -56,7 +56,7 @@ class VideoMonitor2D(Node):
         """
         Subscriber callback
         """
-
+        self.get_logger().info('Receive message')
         # Get the message information
         time_stamp = msg_data.header.stamp
         frame_id = msg_data.header.frame_id
@@ -65,12 +65,12 @@ class VideoMonitor2D(Node):
         image = self.cv_br_.imgmsg_to_cv2(msg_data)
 
         # Determine the text size
+        """
         textsize_stamp = cv2.getTextSize(
             time_stamp,
             self.text_font_,
             self.text_scale_,
-            self.text_thickness_,
-            0
+            self.text_thickness_
         )
         textsize_frame_id = cv2.getTextSize(
             frame_id,
@@ -109,7 +109,7 @@ class VideoMonitor2D(Node):
             self.text_thickness_,
             cv2.FILLED
         )
-
+    """
         # Display image
         cv2.imshow(self.topic_, image)
         cv2.waitKey(1)
@@ -120,15 +120,18 @@ def main(args=None) -> None:
     rclpy.init(args=args)
 
     # Check for attributes
-    if "name" in args:
-        node_name = args["name"]
-    if "topic" in args:
-        node_topic = args["topic"]
-
+    """
+    if args:
+	    if "name" in args:
+		node_name = args["name"]
+	    if "topic" in args:
+		node_topic = args["topic"]
+    """
     # Create a instance of the monitor
+    
     video_monitor = VideoMonitor2D(
-        node_name,
-        node_topic
+        #node_name,
+        #node_topic
     )
 
     # Let the instance be executed continuously
@@ -144,3 +147,4 @@ def main(args=None) -> None:
 # Main clause, run main if this is the top level script
 if __name__ == '__main__':
     main()
+

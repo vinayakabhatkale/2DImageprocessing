@@ -24,6 +24,7 @@ find_package(cv_bridge REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(OpenCV REQUIRED)
+#find_package(gphoto2 REQUIRED)
 
 # Install Python modules
 ament_python_install_package(${PROJECT_NAME})
@@ -36,6 +37,7 @@ install(
   scripts/Pipeline.py
   scripts/VideoPublisher2D.py
   scripts/VideoMonitor2D.py
+  scripts/Homography.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

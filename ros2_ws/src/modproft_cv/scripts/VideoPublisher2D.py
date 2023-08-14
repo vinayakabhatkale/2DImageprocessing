@@ -22,7 +22,7 @@ class VideoPublisher2D(Node):
                  topic: str = "camera_stream2D",
                  frame_id: str = "2DCamera",
                  frequency: float = 20.0,
-                 device_name: str = "0"
+                 device_name: int = 2
                  ) -> None:
         """
         Class constructor
@@ -49,11 +49,10 @@ class VideoPublisher2D(Node):
             self.publish_
         )
 
-        # Create a OpenCV video capture instance
-        self.cap_ = cv2.VideoCapture(device_name)
-        if not self.cap_.isOpened():
-            self.get_logger().fatal("Could not open video device " + device_name)
-            exit()
+        # Create a OpenCV image laoding
+        self.cap_ = cv2.imread('/home/developer/ROS_Foxy_ModProFT/src/modproft_cv/Feature/source.jpg', 0)
+
+        
 
         # Create a cv bridge instance
         self.cv_br_ = CvBridge()
@@ -66,24 +65,26 @@ class VideoPublisher2D(Node):
         """
 
         # Capture frame
-        success, frame = self.cap_.read()
+        frame = self.cap_
+        
 
-        if success:
-            # Create the ROS message
-            img_msg = self.cv_br_.cv2_to_imgmsg(frame)
-            # Add current timestamp
-            img_msg.header.stamp = self.get_clock().now().to_msg()
-            # Add the frame_id
-            img_msg.header.frame_id = self.frame_id_
+        
+        # Create the ROS message
+        img_msg = self.cv_br_.cv2_to_imgmsg(frame)
+        # Add current timestamp
+        img_msg.header.stamp = self.get_clock().now().to_msg()
+        # Add the frame_id
+        img_msg.header.frame_id = self.frame_id_
 
-            self.video_publisher_.publish(img_msg)
+        self.video_publisher_.publish(img_msg)
 
 
 def main(args=None) -> None:
     # Initialize the ROS client library
     rclpy.init(args=args)
-
+    
     # Check for attributes
+    """
     if "name" in args:
         node_name = args["name"]
     if "topic" in args:
@@ -94,14 +95,14 @@ def main(args=None) -> None:
         node_frequency = args["frequency"]
     if "device_name" in args:
         device_name = args["device_name"]
-
+    """
     # Create a instance of the publisher
     video_publisher = VideoPublisher2D(
-        node_name,
-        node_topic,
-        frame_id,
-        node_frequency,
-        device_name
+        #node_name,
+        #node_topic,
+        #frame_id,
+        #node_frequency,
+        #device_name
     )
 
     # Let the instance be executed continuously

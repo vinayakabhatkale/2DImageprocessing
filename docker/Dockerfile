@@ -37,6 +37,10 @@ RUN apt-get update \
        	tmux \
        	vim \
        	wget \
+       	libdmtx0b \
+       	v4l2loopback-dkms  \
+       	gphoto2 \
+       	ffmpeg  \
        	zip \
        && rm -rf /var/lib/apt/lists/*
 
@@ -76,7 +80,8 @@ RUN apt-get update \
 
 RUN ${PIP} --no-cache-dir install --upgrade \
     pip \
-    setuptools==58.2.0
+    setuptools==58.2.0 \
+    pylibdmtx
 
 RUN ln -s $(which ${PYTHON}) /usr/local/bin/python
 
@@ -111,10 +116,13 @@ RUN apt-get update \
 		${PYTHON}-rosdep \
 		${PYTHON}-vcstool \
 		${PYTHON}-opencv \
+		${PYTHON}-gphoto2 \
+		${PYTHON}-matplotlib \
 		ros-${ROS2_DISTRO}-rosbag2 \
 		ros-${ROS2_DISTRO}-rqt \
 		ros-${ROS2_DISTRO}-rviz2 \
 		ros-${ROS2_DISTRO}-cv-bridge \
+		
 	&& rm -rf /var/lib/apt/lists/*
 	
 # Setup colcon mixin and metadata

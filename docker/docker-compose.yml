@@ -33,9 +33,11 @@ services:
       # Grant bus access to FlexBE App.
       #- /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
       # Grant access to serial usb ports for u2d2
-      - /dev/for_docker:/dev/for_docker
+      - /dev:/dev/
     devices:
       - '/dev:/dev'
+    network_mode: host
+      
     #ports:
       #- 50001-50004:50001-50004
     extra_hosts:
