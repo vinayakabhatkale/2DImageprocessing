@@ -71,12 +71,12 @@ class Homography(Node):
         height1 = int(img1.shape[0] * scale_percent / 100)
         dim1 = (width1, height1)
     
-        """       
+              
         scale_percent1 = 20
         width2 = int(img2.shape[1] * scale_percent1 / 100)
         height2 = int(img2.shape[0] * scale_percent1 / 100)
         dim2 = (width2, height2)
-        """
+        
 
         # resize image
         img1 = cv.resize(img1, dim1, interpolation=cv.INTER_AREA)
@@ -235,3 +235,9 @@ def main(args=None) -> None:
 # Main clause, run main if this is the top level script
 if __name__ == '__main__':
     main()
+
+
+if __name__ == '__main__':
+    main()
+
+

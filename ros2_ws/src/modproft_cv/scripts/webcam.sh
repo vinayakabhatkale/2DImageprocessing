@@ -1,6 +1,2 @@
 #!/bin/bash
-gphoto2 --auto-detect &
-gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -s 1280x720 -threads 5 -f v4l2 /dev/video2 &
-
-
-
+gphoto2 --capture-image-and-download --interval=6 --frames=10 --filename "/home/developer/ROS_Foxy_ModProFT/src/modproft_cv/Feature/source.jpg" --force-overwrite
