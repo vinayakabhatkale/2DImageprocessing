@@ -85,20 +85,6 @@ class DMCReader(Node):
         print(dmc_decoded)
         
 
-
-        """
-        cv2.imshow("Video", image)
-        print("Start decoding")
-        # Decode the DMCs
-        dmc_decoded = decode(
-            image,
-            max_count=5,
-            #min_edge=1,
-            #max_edge=1200,
-            #threshold=50,
-            #shrink=1
-            )
-        # Print the DMCs
         
         if dmc_decoded:
             print("DMCs found")
@@ -106,7 +92,7 @@ class DMCReader(Node):
 
             image_height =image.shape[0]
 
-            for idx, dmc in zip(range(len(dmc_decoded)), dmc_decoded):
+            for idx, dmc in zip(range(len(codes)), codes):
                 # print("{idx}: {dmc}".format(idx, dmc))
 
                 (x, y, w, h) = dmc.rect
@@ -137,7 +123,7 @@ class DMCReader(Node):
             plt.title("Decoded")
             plt.show()                                                                      
 
-        """
+
 
 def main(args=None) -> None:
     # Initialize the ROS client library
