@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 
-LABEL maintainer="maximilian.schnitzler@hs-augsburg.de"
+LABEL maintainer="vinayakabhatkale@gmail.com"
 
 EXPOSE 50001-50004
 
@@ -143,10 +143,8 @@ RUN rosdep update --rosdistro $ROS2_DISTRO
 RUN echo "\n#ROS Foxy Setup\nsource /opt/ros/foxy/setup.bash" >> ~/.bashrc
 
 	
-#########################
-##      ModProFT       ##
-#########################
-RUN mkdir -p /home/${USER}/ROS_Foxy_ModProFT/src/
+
+RUN mkdir -p /home/${USER}/ROS_Foxy_bhatkale45/src/
 
 
 # !Command is run as root!

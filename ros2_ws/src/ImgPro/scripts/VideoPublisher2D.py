@@ -50,7 +50,7 @@ class VideoPublisher2D(Node):
         )
 
         # Create a OpenCV image laoding
-        self.cap_ = cv2.imread('/home/developer/ROS_Foxy_ModProFT/src/modproft_cv/Feature/source.jpg', 0)
+        self.cap_ = cv2.imread('/home/developer/ROS_Foxy_ModProFT/src/ImgPro/Feature/source.jpg', 0)
 
         
 

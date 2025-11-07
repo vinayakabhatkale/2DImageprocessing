@@ -62,7 +62,7 @@ class Homography(Node):
         image = self.cv_br_.imgmsg_to_cv2(msg_data)
     
 
-        img1 = cv.imread('/home/developer/ROS_Foxy_ModProFT/src/modproft_cv/Feature/Reference.jpg', 0)  # referenceImage
+        img1 = cv.imread('/home/developer/ROS_Foxy_ModProFT/src/ImgPro/Feature/Reference.jpg', 0)  # referenceImage
         img2 = cv.cvtColor(image,0)  # sensedImage
         
         

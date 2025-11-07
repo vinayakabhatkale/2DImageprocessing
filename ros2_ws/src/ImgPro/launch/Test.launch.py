@@ -16,7 +16,7 @@ def launch_setup(context, *args, **kwargs):
 
     # Define the start of the video publisher
     publisher_node = Node(
-        package="modproft_cv",
+        package="ImgPro",
         executable="VideoPublisher2D.py",
         parameters=[
             {
@@ -29,7 +29,7 @@ def launch_setup(context, *args, **kwargs):
 
     # Define the start of the video monitor
     monitor_node = Node(
-        package="modproft_cv",
+        package="ImgPro",
         executable="VideoMonitor2D.py",
         output="screen"
     )

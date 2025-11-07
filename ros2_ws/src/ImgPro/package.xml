@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>modproft_cv</name>
+  <name>ImgPro</name>
   <version>0.0.0</version>
   <description>Computer vision package for TTZ Noerdlingen Project ModProFT</description>
-  <maintainer email="vinajaka.bhat@hs-augsburg.de">Vinajaka Bhat</maintainer>
-  <maintainer email="maximilian.schnitzler@hs-augsburg.de">Max Schnitzler</maintainer>
+  <maintainer email="vinayakabhatkale@gmail.com">Vinayaka Bhat</maintainer>
 
-  <author email="vinajaka.bhat@hs-augsburg.de">Vinajaka Bhat</author>
+
+  <author email="vinayakabhatkale@gmail.com">Vinayaka Bhat</author>
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
