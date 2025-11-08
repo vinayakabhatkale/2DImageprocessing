@@ -1,5 +1,18 @@
 #!/usr/bin/env python3
 
+"""
+------------------------------------------------------------------------------
+VideoMonitor2D.py
+------------------------------------------------------------------------------
+Author: Vinayaka Bhat
+Package: ImgPro
+Node Name: VideoMonitor2D_node
+Date: 07/05/2024
+Description: Receives a 2D image stream (static or live) as a ROS2 
+             sensor_msgs/Image message for usage/processing.
+------------------------------------------------------------------------------
+"""
+
 # ROS client library python imports
 import rclpy
 from rclpy.node import Node
