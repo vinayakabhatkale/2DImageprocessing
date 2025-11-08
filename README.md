@@ -19,7 +19,7 @@ Run the container via another convenience script in the current terminal.
 ```
 ./RUN-DOCKER-CONTAINER.sh
 ```
-####VideoPublisher2D.py
+**VideoPublisher2D.py**
 
 📌 Overview:
 This ROS 2 node publishes a static or live 2D image stream as a 
@@ -53,13 +53,11 @@ modules such as visualization, monitoring, or image registration pipelines.
 - OpenCV (Image loading and manipulation)
 
 ▶️ Usage:
+
     # Option 1: Run as standalone ROS node
     ros2 run ImgPro VideoPublisher2D.py
 
-    # Option 2: Run via launch file
-    ros2 launch ImgPro Test.launch.py
-
-    # Option 3: Direct Python execution (for testing)
+    # Option 2: Direct Python execution (for testing)
     python3 VideoPublisher2D.py
 
 🧠 Notes:
