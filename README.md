@@ -169,8 +169,7 @@ Below is the output from the `ImageRegistration.py` node after performing featur
 The bounding box, origin, and grip points are annotated on the matched image.
 
 The result is stored in  ./Results/Result_blurred.png along with the transformation matrix.
-<img width="2166" height="351" src="[https://github.com/user-attachments/assets/cc62d127-5cff-46b9-a28f-389651224b50](https://github.com/vinayakabhatkale/2DImageprocessing/tree/main/Results)" />
-
+![](./Results/Result_blurred.png)
 <img width="1056" height="810" alt="Result_blurred" src="https://github.com/user-attachments/assets/efb22407-e32f-4567-b11e-bd4175730210" />
 
 
