@@ -114,3 +114,65 @@ It is designed to work seamlessly with `VideoPublisher2D.py`, serving as a **vis
 
 
 ------------------------------------------------------------------------------
+
+### 🧮 **ImageRegistration.py**
+
+
+📌 Overview:  
+This ROS 2 node performs **feature-based image registration** between a reference image and a live 2D camera stream.  
+It uses **ORB feature matching** and **RANSAC-based homography estimation** to determine object orientation and compute grip points for robotic manipulation tasks.
+
+⚙️ Key Features:
+- Subscribes to a live image topic (`camera_stream2D` by default).  
+- Detects and matches ORB features between reference and sensed images.  
+- Estimates homography transformation using RANSAC for robust alignment.  
+- Draws bounding boxes, grip points, and origin markers on the registered image.  
+- Displays the resulting alignment in real time using OpenCV visualization.  
+
+🧩 Parameters:
+| Parameter | Type | Default | Description |
+|------------|------|----------|-------------|
+| `name` | `str` | `"ImageRegistration_node"` | Node name |
+| `topic` | `str` | `"camera_stream2D"` | Subscribed image topic for registration |
+
+📤 Subscribed Topic:
+| Topic | Message Type | Description |
+|--------|---------------|-------------|
+| `/camera_stream2D` | `sensor_msgs/msg/Image` | Incoming 2D image stream for registration and feature matching |
+
+🧰 Dependencies:
+- rclpy (ROS 2 Python client library)  
+- sensor_msgs (Image message definitions)  
+- cv_bridge (ROS ↔ OpenCV conversion)  
+- OpenCV (feature detection, matching, and visualization)  
+- NumPy (matrix and geometric transformations)  
+- Matplotlib (optional debugging or plotting)  
+
+**Installation:**
+```bash
+sudo apt install ros-${ROS_DISTRO}-cv-bridge
+pip install opencv-python numpy matplotlib
+
+▶️ Usage:
+
+# Option 1: Run as a ROS 2 node
+ros2 run ImgPro ImageRegistration.py
+
+# Option 2: Run directly for debugging
+python3 ImageRegistration.py
+
+**Results:**
+Below is the output from the `ImageRegistration.py` node after performing feature matching and homography-based alignment between the reference and sensed images.  
+The bounding box, origin, and grip points are annotated on the matched image.
+
+<p align="center">
+  <img src="ros2_ws/src/ImgPro/Results/Result_blurred.png" alt="Homography result showing bounding box and grip points" width="700"/>
+</p>
+
+🟩 The white quadrilateral indicates the projected object boundary.  
+🟢 The green dots mark **Grip_point1** and **Grip_point2**, used for potential robotic grasping.  
+🔴 The red text labels are dynamically drawn annotations added using OpenCV.
+
+
+
+------------------------------------------------------------------------------

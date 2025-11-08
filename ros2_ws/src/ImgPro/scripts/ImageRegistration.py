@@ -25,12 +25,12 @@ class Homography(Node):
 
 
     def __init__(self,
-                 name: str = "Homography_node",
+                 name: str = "ImageRegistration_node",
                  topic: str = "camera_stream2D",
                  ) -> None:
         """
         Class constructor
-        :param name: The name of the node, default: Homography_node
+        :param name: The name of the node, default: ImageRegistration_node
         :param topic: The topic for the 2D camera stream of the node, default: camera_stream2D
         """
 
@@ -62,7 +62,7 @@ class Homography(Node):
         image = self.cv_br_.imgmsg_to_cv2(msg_data)
     
 
-        img1 = cv.imread('/home/developer/ROS_Foxy_ModProFT/src/ImgPro/Feature/Reference.jpg', 0)  # referenceImage
+        img1 = cv.imread('/home/developer/ws/src/ImgPro/Feature/Reference.jpg', 0)  # referenceImage
         img2 = cv.cvtColor(image,0)  # sensedImage
         
         
