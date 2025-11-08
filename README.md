@@ -179,7 +179,3 @@ python3 ImageRegistration.py
 
 
 
-
-🟩 The white quadrilateral indicates the projected object boundary.
-🟢 The green dots mark Grip_point1 and Grip_point2, used for potential robotic grasping.
-🔴 The red text labels are dynamically drawn annotations added using OpenCV.
