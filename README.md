@@ -168,10 +168,10 @@ python3 ImageRegistration.py
 ## Results
 
 ### Matched Image with Annotations
-![Matched Image](https://raw.githubusercontent.com/vinayakabhatkale/2DImageprocessing/main/Results/tm.png)
+<img src="https://raw.githubusercontent.com/vinayakabhatkale/2DImageprocessing/main/Results/tm.png" alt="Matched Image" width="600"/>
 
 ### Final Blurred Result
-![Result Blurred](https://raw.githubusercontent.com/vinayakabhatkale/2DImageprocessing/main/Results/Result_blurred.png)
+<img src="https://raw.githubusercontent.com/vinayakabhatkale/2DImageprocessing/main/Results/Result_blurred.png" alt="Result Blurred" width="600"/>
 
 🟩 The white quadrilateral indicates the projected object boundary.
 🟢 The green dots mark Grip_point1 and Grip_point2, used for potential robotic grasping.
