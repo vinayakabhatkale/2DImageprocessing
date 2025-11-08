@@ -165,14 +165,17 @@ python3 ImageRegistration.py
 
 
 
-The result is stored in ./Results/Result_blurred.png along with the transformation matrix.
+## Results
 
 ### Matched Image with Annotations
-!tm](Results/tm.png)
+![Matched Image](https://raw.githubusercontent.com/vinayakabhatkale/2DImageprocessing/main/Results/tm.png)
 
 ### Final Blurred Result
-![Result_blurred](Results/Result_blurred.png)
+![Result Blurred](https://raw.githubusercontent.com/vinayakabhatkale/2DImageprocessing/main/Results/Result_blurred.png)
 
+🟩 The white quadrilateral indicates the projected object boundary.
+🟢 The green dots mark Grip_point1 and Grip_point2, used for potential robotic grasping.
+🔴 The red text labels are dynamically drawn annotations added using OpenCV.
 
 
 
