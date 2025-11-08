@@ -25,3 +25,4 @@ fi
 
 # Build the Docker image.
 docker-compose -p ${PROJECT} -f ./docker/docker-compose.yml build
+# Timestamp refresh

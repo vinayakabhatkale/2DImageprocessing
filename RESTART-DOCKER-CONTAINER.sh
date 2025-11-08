@@ -21,3 +21,4 @@ xhost +
 docker-compose -p ros -f ./docker/docker-compose.yml up -d --build ${SERVICE}
 docker-compose -p ros -f ./docker/docker-compose.yml restart -t 10 ${SERVICE}
 docker exec -i -t ${CONTAINER} bash
+# Timestamp refresh
