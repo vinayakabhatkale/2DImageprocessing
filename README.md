@@ -164,12 +164,14 @@ ros2 run ImgPro ImageRegistration.py
 python3 ImageRegistration.py
 
 
-Below is the output from the `ImageRegistration.py` node after performing feature matching and homography-based alignment between the reference and sensed images.  
-The bounding box, origin, and grip points are annotated on the matched image.
 
-The result is stored in  ./Results/Result_blurred.png along with the transformation matrix.
+The result is stored in ./Results/Result_blurred.png along with the transformation matrix.
 
-![](Results/Result_blurred.png)
+### Matched Image with Annotations
+![Screenshot from 2023-04-04 14-21-42](Results/S2.png
+
+### Final Blurred Result
+![Result_blurred](Results/Result_blurred.png)
 
 
 
