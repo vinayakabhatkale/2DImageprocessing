@@ -168,7 +168,7 @@ python3 ImageRegistration.py
 Below is the output from the `ImageRegistration.py` node after performing feature matching and homography-based alignment between the reference and sensed images.  
 The bounding box, origin, and grip points are annotated on the matched image.
 
-![](./ros2_ws/src/ImgPro/Results/Result_blurred.png)
+The result is stored in ./ros2_ws/src/ImgPro/Results/Result_blurred.png
 
 🟩 The white quadrilateral indicates the projected object boundary.
 🟢 The green dots mark Grip_point1 and Grip_point2, used for potential robotic grasping.
