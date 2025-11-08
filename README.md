@@ -19,7 +19,7 @@ Run the container via another convenience script in the current terminal.
 ```
 ./RUN-DOCKER-CONTAINER.sh
 ```
-VideoPublisher2D.py
+####VideoPublisher2D.py
 
 📌 Overview:
 This ROS 2 node publishes a static or live 2D image stream as a 
