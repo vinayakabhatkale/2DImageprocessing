@@ -163,7 +163,8 @@ ros2 run ImgPro ImageRegistration.py
 # Option 2: Run directly for debugging
 python3 ImageRegistration.py
 
-**Results:**  
+**Results:** 
+```bash 
 Below is the output from the `ImageRegistration.py` node after performing feature matching and homography-based alignment between the reference and sensed images.  
 The bounding box, origin, and grip points are annotated on the matched image.
 
@@ -173,11 +174,4 @@ The bounding box, origin, and grip points are annotated on the matched image.
 🟢 The green dots mark Grip_point1 and Grip_point2, used for potential robotic grasping.
 🔴 The red text labels are dynamically drawn annotations added using OpenCV.
 
-
-
-<<<<<<< HEAD
 ------------------------------------------------------------------------------
-=======
-
-------------------------------------------------------------------------------
->>>>>>> Updated ReadMe
