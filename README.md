@@ -141,7 +141,7 @@ It uses **ORB feature matching** and **RANSAC-based homography estimation** to d
 | `/camera_stream2D` | `sensor_msgs/msg/Image` | Incoming 2D image stream for registration and feature matching |
 
 🧰 Dependencies:
-- rclpy (ROS 2 Python client library)  
+- rclpy (ROS 2 client library for Python)  
 - sensor_msgs (Image message definitions)  
 - cv_bridge (ROS ↔ OpenCV conversion)  
 - OpenCV (feature detection, matching, and visualization)  
@@ -153,19 +153,21 @@ It uses **ORB feature matching** and **RANSAC-based homography estimation** to d
 sudo apt install ros-${ROS_DISTRO}-cv-bridge
 pip install opencv-python numpy matplotlib
 
+
+
 ▶️ Usage:
 
-# Option 1: Run as a ROS 2 node
+## Option 1: Run as a ROS 2 node
 ros2 run ImgPro ImageRegistration.py
 
 # Option 2: Run directly for debugging
 python3 ImageRegistration.py
 
-📈 Results (Blurred for Confidentiality):
-Below is the output from the ImageRegistration.py node after performing feature matching and homography-based alignment between the reference and sensed images.
+**Results:**  
+Below is the output from the `ImageRegistration.py` node after performing feature matching and homography-based alignment between the reference and sensed images.  
 The bounding box, origin, and grip points are annotated on the matched image.
 
-<div align="center"> <img src="https://github.com/vinayakabhatkale/2DImageprocessing/blob/main/ros2_ws/src/ImgPro/Results/Result_blurred.png?raw=true" alt="Image matching and registration blurred result" width="700"> <br> <em>Figure: Feature-based image registration output (blurred for confidentiality)</em> </div>
+![](./ros2_ws/src/ImgPro/Results/Result_blurred.png)
 
 🟩 The white quadrilateral indicates the projected object boundary.
 🟢 The green dots mark Grip_point1 and Grip_point2, used for potential robotic grasping.
@@ -173,4 +175,9 @@ The bounding box, origin, and grip points are annotated on the matched image.
 
 
 
+<<<<<<< HEAD
 ------------------------------------------------------------------------------
+=======
+
+------------------------------------------------------------------------------
+>>>>>>> Updated ReadMe
