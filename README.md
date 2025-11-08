@@ -71,37 +71,46 @@ modules such as visualization, monitoring, or image registration pipelines.
 
 ### 📺 **VideoMonitor2D.py**
 
-📌 Overview:  
-This ROS 2 node subscribes to a 2D image topic (`sensor_msgs/Image`) and displays incoming frames in real time using OpenCV.  
-It works in tandem with `VideoPublisher2D.py`, serving as a **visualization and monitoring tool** to verify that image data is being published correctly in the ROS environment.
+ 📌 Overview:
+`VideoMonitor2D.py` is a **ROS 2 node** that subscribes to a 2D image topic (`sensor_msgs/Image`) and displays incoming frames in real time using OpenCV.  
+It is designed to work seamlessly with `VideoPublisher2D.py`, serving as a **visualization and monitoring tool** to verify that image data is being published correctly in the ROS environment.
+
+
 
 ⚙️ Key Features:
-- Subscribes to an image topic (`camera_stream2D` by default).
+
+- Subscribes to an image topic (default: `camera_stream2D`).
 - Converts incoming ROS image messages to OpenCV format using `CvBridge`.
-- Displays the live image stream in an OpenCV window.
-- Logs message reception events to the ROS 2 console.
-- Supports text overlays (timestamp, frame ID, etc.) on frames — currently commented out for clarity.
+- Displays the live image stream in a resizable OpenCV window.
+- Logs message reception to the ROS 2 console.
+- Ready for adding text overlays (timestamp, frame ID, etc.) on each frame.
+
+
 
 🧩 Parameters:
+
 | Parameter | Type | Default | Description |
 |------------|------|----------|-------------|
-| name | str | "VideoMonitor2D_node" | Node name |
-| topic | str | "camera_stream2D" | Subscribed topic name for image stream |
+| `name` | `str` | `"VideoMonitor2D_node"` | Node name |
+| `topic` | `str` | `"camera_stream2D"` | Topic name for subscribed image stream |
 
-📤 Subscribed Topic:
-| Topic | Message Type | Description |
-|--------|---------------|-------------|
-| /camera_stream2D | sensor_msgs/msg/Image | Incoming 2D image stream for visualization |
+
 
 🧰 Dependencies:
-- rclpy (ROS 2 client library for Python)
-- sensor_msgs (Image message definitions)
-- cv_bridge (ROS ↔ OpenCV conversion)
-- OpenCV (Image visualization and manipulation)
 
-**Installation:**
-```bash
-sudo apt install ros-${ROS_DISTRO}-cv-bridge
-pip install opencv-python
+- **rclpy** — ROS 2 Python client library  
+- **sensor_msgs** — ROS 2 message definitions for image topics  
+- **cv_bridge** — Conversion between ROS `Image` messages and OpenCV images  
+- **opencv-python** — For visualization and frame processing  
 
----
+
+▶️ Usage:
+
+    # Option 1: Run as standalone ROS node
+    ros2 run ImgPro VideoMonitor2D.py
+
+    # Option 2: Direct Python execution (for testing)
+    python3 VideoMonitor2D.py
+
+
+------------------------------------------------------------------------------
