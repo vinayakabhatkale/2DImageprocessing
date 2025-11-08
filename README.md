@@ -166,7 +166,7 @@ Below is the output from the `ImageRegistration.py` node after performing featur
 The bounding box, origin, and grip points are annotated on the matched image.
 
 <p align="center">
-  <img src="ros2_ws/src/ImgPro/Results/Result_blurred.png" alt="Homography result showing bounding box and grip points" width="700"/>
+  <img src="ros2_ws/src/ImgPro/Results/Result_blurred.png" alt="Image registration blurred result" width="700"/>
 </p>
 
 🟩 The white quadrilateral indicates the projected object boundary.  
