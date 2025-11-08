@@ -168,7 +168,7 @@ python3 ImageRegistration.py
 The result is stored in ./Results/Result_blurred.png along with the transformation matrix.
 
 ### Matched Image with Annotations
-![Screenshot from 2023-04-04 14-21-42](Results/S2.png
+![Screenshot from 2023-04-04 14-21-42](Results/S2.png)
 
 ### Final Blurred Result
 ![Result_blurred](Results/Result_blurred.png)
