@@ -1,0 +1,48 @@
+version: "2.4"
+
+################################################################################
+
+services:
+  ros_foxy_development:
+    hostname: ros_dev_docker
+    runtime: ${DOCKER_RUNTIME}
+    privileged: true
+    environment:
+      # Pass host user information.
+      #- HOST_USER=${USER}
+      #- HOST_UID=1000
+      #- HOST_GID=1000
+      # Display X Server GUI.
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      # Configure Nvidia Docker interface.
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_REQUIRE_CUDA=cuda>=9.0
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile
+    volumes:
+      # Add more directories from your host here. There are the directories that also 
+      # should be versioned with a git repository. ONLY source files will be uploaded to git
+      - ../scripts/:/home/developer/scripts/
+      - ../share/:/home/developer/share/
+      - ../ros2_ws/src/:/home/developer/ROS_Foxy_ModProFT/src/
+      # Grant display access to X Server.
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      # Grant bus access to FlexBE App.
+      #- /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket
+      # Grant access to serial usb ports for u2d2
+      - /dev:/dev/
+    devices:
+      - '/dev:/dev'
+    network_mode: host
+      
+    #ports:
+      #- 50001-50004:50001-50004
+    extra_hosts:
+      - "ros_dev_docker_lb:127.0.0.1"   # Seems that it might be needed for ROS networking
+      - "ros_ros2_test:192.168.137.201"
+    command: /home/developer/scripts/keep-running.bash
+
+    
